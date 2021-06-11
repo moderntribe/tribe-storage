@@ -76,7 +76,7 @@ class Image_Editor_Imagick extends WP_Image_Editor_Imagick {
 	 *
 	 * @return array|\WP_Error
 	 */
-	protected function _save( Imagick $image, string $filename = '', string $mime_type = '' ) { // phpcs:ignore
+	protected function _save( $image, $filename = null, $mime_type = null ) { // phpcs:ignore
 		[ $filename, $extension, $mime_type ] = $this->get_output_format( $filename, $mime_type );
 
 		if ( empty( $filename ) ) {

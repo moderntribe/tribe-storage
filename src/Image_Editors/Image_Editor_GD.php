@@ -76,8 +76,7 @@ class Image_Editor_GD extends WP_Image_Editor_GD {
 	 *
 	 * @return array|\WP_Error
 	 */
-	// phpcs:ignore
-	protected function _save( $image, $filename = null, $mime_type = null ) {
+	protected function _save( $image, $filename = null, $mime_type = null ) { // phpcs:ignore
 		[ $filename, $extension, $mime_type ] = $this->get_output_format( $filename, $mime_type );
 
 		if ( ! $filename ) {
