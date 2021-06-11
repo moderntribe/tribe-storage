@@ -43,6 +43,10 @@ class UploadManagerTest extends TestCase {
 			define( 'WP_CONTENT_DIR', '/tmp/www/wp-content' );
 		}
 
+		if ( ! defined( 'TRIBE_STORAGE_IMAGE_ORIENTATION' ) ) {
+			define( 'TRIBE_STORAGE_IMAGE_ORIENTATION', true );
+		}
+
 		$this->filesystem                      = Mockery::mock( Filesystem::class );
 		$this->upload_dir                      = Mockery::mock( Wp_Upload_Dir::class );
 		$this->image_manager                   = Mockery::mock( ImageManager::class );
@@ -93,7 +97,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/bypass_image_orientation' )
 			->once()
-			->with( false );
+			->with( false, null, $file, '', '' );
 
 		$result = $upload_manager->fix_image_orientation( null, $file, '', '' );
 
@@ -116,7 +120,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/bypass_image_orientation' )
 			->once()
-			->with( false );
+			->with( false, null, $file, '', '' );
 
 		$result = $upload_manager->fix_image_orientation( null, $file, '', '' );
 
@@ -141,7 +145,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/bypass_image_orientation' )
 			->once()
-			->with( false );
+			->with( false, null, $file, '', '' );
 
 		$result = $upload_manager->fix_image_orientation( null, $file, '', '' );
 
@@ -182,7 +186,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/bypass_image_orientation' )
 			->once()
-			->with( false );
+			->andReturn( false );
 
 		$upload_manager->fix_image_orientation( null, $file, '', '' );
 	}

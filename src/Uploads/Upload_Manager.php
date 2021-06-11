@@ -70,7 +70,9 @@ class Upload_Manager {
 		 *
 		 * @param  bool  $bypass  Bypass the image orientation fix.
 		 */
-		if ( apply_filters( 'tribe/storage/bypass_image_orientation', false ) ) {
+		$bypass = (bool) apply_filters( 'tribe/storage/bypass_image_orientation', false, $move_new_file, $file, $new_file, $type );
+
+		if ( true === $bypass ) {
 			return $move_new_file;
 		}
 

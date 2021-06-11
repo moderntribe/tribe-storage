@@ -75,9 +75,12 @@ class Tribe_Storage_Provider implements Providable {
 	 * Register Upload related hooks.
 	 */
 	private function register_upload_hooks(): void {
-		add_filter( 'pre_move_uploaded_file', function ( $move_new_file, array $file, string $new_file, string $type ) {
-			return $this->upload_dir->fix_image_orientation( $move_new_file, $file, $new_file, $type );
-		}, 10, 4 );
+		// Only run image orientation fix if developers have enabled this feature.
+		if ( defined( 'TRIBE_STORAGE_IMAGE_ORIENTATION' ) && TRIBE_STORAGE_IMAGE_ORIENTATION ) {
+			add_filter( 'pre_move_uploaded_file', function ( $move_new_file, array $file, string $new_file, string $type ) {
+				return $this->upload_dir->fix_image_orientation( $move_new_file, $file, $new_file, $type );
+			}, 10, 4 );
+		}
 
 		add_filter( 'upload_dir', function ( array $dirs ) {
 			return $this->upload_dir->upload_dir( $dirs );
