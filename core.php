@@ -14,6 +14,7 @@ use Tribe\Storage\Core;
 
 // Require the vendor folder via multiple locations
 $autoloaders = [
+	trailingslashit( WP_CONTENT_DIR ) . '../vendor/autoload.php',
 	trailingslashit( WP_CONTENT_DIR ) . 'vendor/autoload.php',
 	trailingslashit( __DIR__ ) . 'vendor/autoload.php',
 ];
