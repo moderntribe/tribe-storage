@@ -128,11 +128,11 @@ $tribe_storage_config = [
 		try {
 			$adapter = $c->get( defined( 'TRIBE_STORAGE_ADAPTER' ) ? TRIBE_STORAGE_ADAPTER : '' )->get();
 		} catch ( Throwable $e ) {
-			$exception = new Exception( 'TRIBE_STORAGE_ADAPTER not defined or contains an invalid adapter path. Falling back to the Local Adapter.' );
+			$exception = new Exception( 'TRIBE_STORAGE_ADAPTER not defined or is invalid. Falling back to the Local Adapter.' );
 
-			// Throw the exception when WP_DEBUG is enabled.
+			// Show full exception in error log if WP_DEBUG is enabled.
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( $exception->getMessage() );
+				error_log( $e->getMessage() );
 			}
 
 			// Capture the exception to display in the admin if on a production system.
