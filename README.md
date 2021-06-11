@@ -23,6 +23,21 @@ function tribe_isSSL() {
 define( 'WP_CONTENT_URL', ( tribe_isSSL() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . '/wp-content' );
 ```
 
+## Installation
+
+**Requirements**
+- PHP7.3+
+- [Composer](https://getcomposer.org/)
+- [Composer Installers](https://composer.rarst.net/recipe/paths-control/)
+- The server should have PHP compiled with [ImageMagick](https://www.php.net/manual/en/book.imagick.php) or
+[GD](https://www.php.net/manual/en/book.image.php).
+
+### Install with Composer
+
+```shell
+composer require moderntribe/tribe-storage
+```
+
 ## Adapters
 
 Adapters allow different interfaces to different storage providers. In order to tell the system which adapter to use,
