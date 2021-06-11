@@ -110,7 +110,7 @@ Additionally, this can be configured with the `tribe/storage/s3_client_options` 
 
 Force a custom Image Editor Strategy if Imagick or GD are experiencing issues like 500 errors with no logs.
 
-```
+```php
 // For GD
 define( 'TRIBE_STORAGE_IMAGE_EDITOR', 'gd' );
 
