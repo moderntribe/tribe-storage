@@ -12,7 +12,7 @@ Version:     1.0.0
 use DI\ContainerBuilder;
 use Tribe\Storage\Core;
 
-// Require the main vendor autoloader via the composer merge plugin
+// Require the vendor folder via multiple locations
 $autoloaders = [
 	trailingslashit( WP_CONTENT_DIR ) . 'vendor/autoload.php',
 	trailingslashit( __DIR__ ) . 'vendor/autoload.php',

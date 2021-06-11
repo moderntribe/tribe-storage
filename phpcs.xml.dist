@@ -22,6 +22,7 @@
     <file>./index.php</file>
 
     <!-- Exclude files -->
+    <exclude-pattern>./tests</exclude-pattern>
 
     <!-- Include the Modern Tribe coding standard -->
     <rule ref="ModernTribe"/>

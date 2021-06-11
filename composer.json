@@ -17,7 +17,8 @@
     "league/flysystem-cached-adapter": "^1.1",
     "intervention/image": "^2.5",
     "symfony/lock": "^5.2",
-    "jhofm/flysystem-iterator": "^2.2"
+    "jhofm/flysystem-iterator": "^2.2",
+    "league/flysystem-aws-s3-v3": "^1.0"
   },
   "require-dev": {
     "brain/monkey": "2.*",
@@ -32,7 +33,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tribe\\Storage\\Tests\\": "tests/"
+      "Tribe\\Storage\\Tests\\": "tests"
     },
     "files": [
       "tests/Bootstrap.php"

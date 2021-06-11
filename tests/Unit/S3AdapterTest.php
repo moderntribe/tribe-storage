@@ -2,8 +2,8 @@
 
 namespace Tribe\Storage\Tests\Unit;
 
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Cached\CachedAdapter;
 use phpmock\mockery\PHPMockery;
 use Tribe\Storage\Tests\TestCase;
@@ -13,7 +13,7 @@ use Tribe\Storage\Tests\TestCase;
  *
  * @preserveGlobalState disabled
  */
-class AdapterTest extends TestCase {
+class S3AdapterTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -49,31 +49,40 @@ class AdapterTest extends TestCase {
 		@rmdir( '/tmp/www' );
 	}
 
-	/**
-	 * If a user didn't define the required defines, this should fall back to the default, local adapter.
-	 *
-	 * @throws \Exception
-	 */
-	public function test_it_gets_a_local_adapter_with_missing_adapters(): void {
-
-		PHPMockery::mock( 'Tribe\Storage', 'is_multisite' )
-				  ->once()
-				  ->andReturnFalse();
+	public function test_it_finds_an_s3_adapter(): void {
+		PHPMockery::mock( 'Tribe\Storage\Adapters\Cached_Adapters', 'wp_using_ext_object_cache' )
+				  ->twice()
+				  ->andReturnTrue();
 
 		PHPMockery::mock( 'Tribe\Storage\Adapters\Cached_Adapters', 'get_transient' )
 				  ->once()
 				  ->andReturnFalse();
 
-		PHPMockery::mock( 'Tribe\Storage\Adapters\Cached_Adapters', 'wp_using_ext_object_cache' )
-				  ->twice()
-				  ->andReturnTrue();
+		// Mock what a user would have in their wp-config.php
+		define( 'TRIBE_STORAGE_ADAPTER', 'Tribe\Storage\Adapters\S3_Adapter' );
+		define( 'TRIBE_STORAGE_S3_BUCKET', 'mybucketname' );
+		define( 'TRIBE_STORAGE_S3_OPTIONS', [
+			'credentials' => [
+				'key'    => 'mykey',
+				'secret' => 'mysecretkey',
+			],
+			'region'      => 'us-east-1',
+			'version'     => 'latest',
+		] );
 
 		$container = tribe_storage()->container();
 
 		$adapter = $container->get( AdapterInterface::class );
 
 		$this->assertInstanceOf( CachedAdapter::class, $adapter );
-		$this->assertInstanceOf( Local::class, $adapter->getAdapter() );
+		$this->assertInstanceOf( AwsS3Adapter::class, $adapter->getAdapter() );
+		$this->assertSame( 'mybucketname', $adapter->getAdapter()->getBucket() );
+
+		$promise = $adapter->getAdapter()->getClient()->getCredentials();
+		$promise->then( function ( $value ): void {
+			$this->assertContains( 'mykey', $value );
+			$this->assertContains( 'mysecretkey', $value );
+		} );
 	}
 
 }
