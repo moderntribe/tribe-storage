@@ -29,6 +29,8 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+      - name: Composer install
+        run: composer install
       - name: Detect File Changes
         uses: dorny/paths-filter@v2
         id: filter
@@ -41,8 +43,6 @@ jobs:
         if: ${{ steps.filter.outputs.wpcontent == 'true' }}
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
-        run: |
-          composer install
-          ./vendor/bin/phpcs ${{ steps.filter.outputs.wpcontent_files }}
+        run: ./vendor/bin/phpcs ${{ steps.filter.outputs.wpcontent_files }}
       - name: Unit testing
         run: ./vendor/bin/phpunit

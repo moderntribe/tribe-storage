@@ -2,7 +2,6 @@
 
 namespace Tribe\Storage;
 
-use Aws\S3\S3Client;
 use Exception;
 use Intervention\Image\ImageManager;
 use Jhofm\FlysystemIterator\Plugin\IteratorPlugin;
@@ -16,7 +15,6 @@ use Throwable;
 use Tribe\Storage\Adapters\Azure_Adapter;
 use Tribe\Storage\Adapters\Cached_Adapters\Transient;
 use Tribe\Storage\Adapters\Local_Adapter;
-use Tribe\Storage\Adapters\S3_Adapter;
 use Tribe\Storage\Cache\Cache;
 use Tribe\Storage\Cache\Lru;
 use Tribe\Storage\Stream_Wrappers\Identity\Fallback_Identifier;
@@ -100,23 +98,6 @@ $tribe_storage_config = [
 				'stream' => true,
 			],
 		] );
-	},
-
-	/**
-	 * The S3 adapter.
-	 */
-	S3_Adapter::class       => static function () {
-		$bucket = (string) apply_filters(
-			'tribe/storage/s3_bucket',
-			defined( 'TRIBE_STORAGE_S3_BUCKET' ) ? TRIBE_STORAGE_S3_BUCKET : ''
-		);
-
-		$options = (array) apply_filters(
-			'tribe/storage/s3_client_options',
-			defined( 'TRIBE_STORAGE_S3_OPTIONS' ) ? TRIBE_STORAGE_S3_OPTIONS : []
-		);
-
-		return new S3_Adapter( $bucket, new S3Client( $options ) );
 	},
 
 	/**
