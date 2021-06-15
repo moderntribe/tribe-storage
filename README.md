@@ -74,38 +74,6 @@ define( 'TRIBE_STORAGE_ADAPTER', 'Tribe\Storage\Adapters\Azure_Adapter' );
 define( 'TRIBE_STORAGE_URL', 'https://example.com/wp-content/uploads/' . MICROSOFT_AZURE_CONTAINER );
 ```
 
-### S3 Adapter
-
-Define the adapter and your bucket name in `wp-config.php`:
-
-```php
-define( 'TRIBE_STORAGE_ADAPTER', 'Tribe\Storage\Adapters\S3_Adapter' );
-define( 'TRIBE_STORAGE_S3_BUCKET', 'mybucketname' );
-```
-
-Define the minimum S3 options in `wp-config.php`:
-
-```php
-define( 'TRIBE_STORAGE_S3_OPTIONS', [
-	'credentials' => [
-		'key'    => 'YOUR-KEY',
-		'secret' => 'YOUR-SECRET-KEY',
-	],
-	'region'      => 'us-east-1',
-	'version'     => 'latest',
-] );
-```
-
-Define the URL of the CDN or the public URL for your bucket in `wp-config.php`:
-
-```php
-define( 'TRIBE_STORAGE_URL', 'https://example.com/wp-content/uploads/' . TRIBE_STORAGE_S3_BUCKET );
-```
-
-Full configuration options for the S3 client are available via 
-[AWS documentation](https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_configuration.html). 
-Additionally, this can be configured with the `tribe/storage/s3_client_options` filter.
-
 ### Image Editor Customization
 
 Force a custom Image Editor Strategy if Imagick or GD are experiencing issues like 500 errors with no logs.

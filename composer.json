@@ -1,6 +1,6 @@
 {
   "name": "moderntribe/tribe-storage",
-  "description": "A WordPress plugin to upload files to many different storage types like s3, Azure, DO Spaces",
+  "description": "A WordPress plugin to upload files to many different storage types like Azure, s3, DO Spaces",
   "type": "wordpress-plugin",
   "authors": [
     {
@@ -17,8 +17,7 @@
     "league/flysystem-cached-adapter": "^1.1",
     "intervention/image": "^2.5",
     "symfony/lock": "^5.2",
-    "jhofm/flysystem-iterator": "^2.2",
-    "league/flysystem-aws-s3-v3": "^1.0"
+    "jhofm/flysystem-iterator": "^2.2"
   },
   "require-dev": {
     "brain/monkey": "2.*",
