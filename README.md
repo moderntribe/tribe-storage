@@ -7,7 +7,6 @@ within WordPress. This plugin is meant to be installed and configured by **devel
 
 - [Local](https://flysystem.thephpleague.com/v1/docs/adapter/local/)
 - [Azure Storage](https://flysystem.thephpleague.com/v1/docs/adapter/azure/)
-- [S3](https://flysystem.thephpleague.com/v1/docs/adapter/aws-s3-v3/)
 
 ## Recommendations
 
