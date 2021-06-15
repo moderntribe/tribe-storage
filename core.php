@@ -6,7 +6,7 @@ Plugin URI: https://tri.be
 Description: Replace the WordPress filesystem with Flypress adapters. Allows the use of multiple cloud storage providers.
 Author:      Modern Tribe
 Author URI:  https://tri.be
-Version:     1.0.2
+Version:     1.1.0
 */
 
 use DI\ContainerBuilder;
@@ -37,6 +37,11 @@ add_action( 'plugins_loaded', static function (): void {
  */
 function tribe_storage(): Core {
 	$builder = new ContainerBuilder();
+
+	if ( class_exists( \Tribe\Storage\Adapters\S3_Definition_Provider::class ) ) {
+		$builder->addDefinitions( ( new \Tribe\Storage\Adapters\S3_Definition_Provider() )->get() );
+	}
+
 	$builder->addDefinitions( __DIR__ . '/config.php' );
 	$container = $builder->build();
 
