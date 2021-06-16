@@ -13,8 +13,6 @@ interface Bridge {
 
 	/**
 	 * Get the configured Flysystem Adapter.
-	 *
-	 * @return \League\Flysystem\AdapterInterface
 	 */
 	public function get(): AdapterInterface;
 

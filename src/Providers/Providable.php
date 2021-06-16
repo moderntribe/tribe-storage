@@ -3,7 +3,7 @@
 namespace Tribe\Storage\Providers;
 
 /**
- * Service Providers should implement this interface
+ * The Service Provider Interface.
  *
  * @package Tribe\Storage\Uploads\Providers
  */

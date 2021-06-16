@@ -2,6 +2,7 @@
 
 namespace Tribe\Storage\Uploads;
 
+use Throwable;
 use Intervention\Image\Exception\NotSupportedException;
 use Intervention\Image\ImageManager;
 use InvalidArgumentException;
@@ -10,7 +11,7 @@ use Tribe\Storage\Image_Editors\Image_Editor_GD;
 use Tribe\Storage\Image_Editors\Image_Editor_Imagick;
 
 /**
- * Class Upload_Manager
+ * Class Upload_Manager.
  *
  * @package Tribe\Storage\Uploads
  */
@@ -31,7 +32,7 @@ class Upload_Manager {
 	protected $upload_dir;
 
 	/**
-	 * The Intervention Image Manager
+	 * The Intervention Image Manager.
 	 *
 	 * @var \Intervention\Image\ImageManager
 	 */
@@ -104,7 +105,7 @@ class Upload_Manager {
 				// Fix image orientation based on existing exif data
 				$image->orientate();
 				$image->save( $file_path );
-			} catch ( \Throwable $e ) {
+			} catch ( Throwable $e ) {
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 					throw $e;
 				}

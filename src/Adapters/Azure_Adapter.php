@@ -7,7 +7,7 @@ use League\Flysystem\AzureBlobStorage\AzureBlobStorageAdapter;
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 
 /**
- * Class AzureAdapter
+ * The Azure Bridge Adapter.
  *
  * @package Tribe\Storage\Adapters
  */

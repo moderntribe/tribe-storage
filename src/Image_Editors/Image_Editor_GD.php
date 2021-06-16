@@ -6,7 +6,7 @@ use WP_Error;
 use WP_Image_Editor_GD;
 
 /**
- * Class Image_Editor_GD
+ * Class Image_Editor_GD.
  *
  * @package Tribe\Storage\Image_Editors
  */
@@ -22,7 +22,7 @@ class Image_Editor_GD extends WP_Image_Editor_GD {
 	protected $temp_files = [];
 
 	/**
-	 * Remove temporary files
+	 * Remove temporary files.
 	 */
 	public function __destruct() {
 		array_map( 'unlink', $this->temp_files );
@@ -30,7 +30,7 @@ class Image_Editor_GD extends WP_Image_Editor_GD {
 	}
 
 	/**
-	 * Loads image from $this->file into new GD Resource.
+	 * Loads the image from $this->file into a new GD Resource.
 	 *
 	 * @return bool|\WP_Error True if loaded successfully; WP_Error on failure.
 	 *

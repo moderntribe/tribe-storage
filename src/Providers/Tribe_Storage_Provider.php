@@ -2,6 +2,7 @@
 
 namespace Tribe\Storage\Providers;
 
+use Throwable;
 use Tribe\Storage\Attachment;
 use Tribe\Storage\Notice;
 use Tribe\Storage\Uploads\Upload_Manager;
@@ -96,7 +97,7 @@ class Tribe_Storage_Provider implements Providable {
 	 */
 	private function register_notice_hooks(): void {
 		// Show an admin notice if a defined adapter was not properly configured
-		add_action( 'tribe/storage/adapter_error', function ( \Throwable $e ): void {
+		add_action( 'tribe/storage/adapter_error', function ( Throwable $e ): void {
 			add_action( 'admin_notices', function () use ( $e ): void {
 				$this->notice->print_notices( $e );
 			}, 10, 0 );

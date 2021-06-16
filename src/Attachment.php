@@ -7,7 +7,7 @@ use Throwable;
 use Tribe\Storage\Uploads\Wp_Upload_Dir;
 
 /**
- * Class Attachment
+ * Class Attachment.
  *
  * @package Tribe\Storage
  */
@@ -57,7 +57,7 @@ class Attachment {
 		}
 
 		/**
-		 * Modify Storage attachment url.
+		 * Modify the storage attachment url.
 		 *
 		 * @param  string                              $url
 		 * @param  int                                 $attachment_id

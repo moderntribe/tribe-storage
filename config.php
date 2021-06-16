@@ -50,8 +50,8 @@ $tribe_storage_config = [
 	/**
 	 * The local disk adapter.
 	 *
-	 * For local file storage, we always want the server path to wp-content/uploads so
-	 * sub sites with site/<id> media are uploaded to the proper path.
+	 * For local file storage, we always want the server path to be wp-content/uploads so
+	 * sub sites with site/<id> are uploaded to the proper path.
 	 */
 	Local_Adapter::class    => static function () {
 
@@ -65,7 +65,7 @@ $tribe_storage_config = [
 		}
 
 		/**
-		 * Get the default WordPress upload directory
+		 * Get the default WordPress upload directory.
 		 *
 		 * @param  string  $upload_dir  The path to the WordPress upload directory.
 		 */
@@ -111,7 +111,7 @@ $tribe_storage_config = [
 		} catch ( Throwable $e ) {
 			$exception = new Exception( 'TRIBE_STORAGE_ADAPTER not defined or is invalid. Falling back to the Local Adapter.' );
 
-			// Show full exception in error log if WP_DEBUG is enabled.
+			// Show the original exception message in error log if WP_DEBUG is enabled.
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 				error_log( $e->getMessage() );
 			}
@@ -152,7 +152,7 @@ $tribe_storage_config = [
 	},
 
 	/**
-	 * Stream Wrapper Cache
+	 * Stream Wrapper Cache.
 	 */
 	Cache::class            => static function () {
 		return new Lru();
@@ -163,7 +163,7 @@ $tribe_storage_config = [
 	},
 
 	/**
-	 * Register Flysystem's filesystem, with a PHP stream wrapper.
+	 * Register Flysystem's filesystem, with our PHP stream wrapper.
 	 *
 	 * This must happen here before any wp_upload_dir() calls.
 	 */
@@ -182,7 +182,7 @@ $tribe_storage_config = [
 		$filesystem->addPlugin( new ForcedRename() );
 
 		/**
-		 * Customize the Stream Wrapper cache
+		 * Customize the Stream Wrapper cache.
 		 *
 		 * @param \Tribe\Storage\Cache\Cache $cache
 		 */

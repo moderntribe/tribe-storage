@@ -213,7 +213,7 @@ class StreamWrapper {
 	/**
 	 * Read from the stream.
 	 *
-	 * @param  int  $count How many bytes from the current position should be returned
+	 * @param  int  $count How many bytes from the current position should be returned.
 	 *
 	 * @return string
 	 */
@@ -406,6 +406,9 @@ class StreamWrapper {
 	 *
 	 * @param  string  $path_from
 	 * @param  string  $path_to
+	 *
+	 * @throws \League\Flysystem\FileExistsException
+	 * @throws \League\Flysystem\FileNotFoundException
 	 *
 	 * @return bool
 	 */
@@ -676,7 +679,7 @@ class StreamWrapper {
 		$stat = $this->stat_template();
 
 		try {
-			// Try to get our information from flysystem
+			// Try to get our information from Flysystem
 			$meta = $this->filesystem()->getMetadata( $this->get_target() );
 
 			// Even if this worked, it could be empty
@@ -687,7 +690,7 @@ class StreamWrapper {
 			$type = $meta['type'] ?? '';
 
 			if ( 'dir' === $type ) {
-				// Provide a default templates for directories
+				// Provide a default stat template for directories
 				$stat[2] = $stat['mode'] = self::DIR_WRITABLE_MODE;
 				$stat[4] = $stat['uid'] = $this->identifier()->uid();
 				$stat[5] = $stat['gid'] = $this->identifier()->gid();
@@ -744,7 +747,7 @@ class StreamWrapper {
 			case STREAM_OPTION_BLOCKING:
 				// This works for the local adapter. It doesn't do anything for
 				// memory streams.
-				return stream_set_blocking( $this->stream->detach(), $arg1 );
+				return stream_set_blocking( $this->stream->detach(), (bool) $arg1 );
 
 			case STREAM_OPTION_READ_TIMEOUT:
 				return stream_set_timeout( $this->stream->detach(), $arg1, $arg2 );

@@ -30,8 +30,6 @@ class Local_Adapter extends Adapter {
 
 	/**
 	 * Get the Adapter.
-	 *
-	 * @return \League\Flysystem\AdapterInterface
 	 */
 	public function get(): AdapterInterface {
 		return new Local( $this->upload_dir );

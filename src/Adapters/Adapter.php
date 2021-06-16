@@ -13,8 +13,6 @@ abstract class Adapter implements Bridge {
 
 	/**
 	 * Get the Adapter.
-	 *
-	 * @return \League\Flysystem\AdapterInterface
 	 */
 	abstract public function get(): AdapterInterface;
 

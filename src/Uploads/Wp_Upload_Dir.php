@@ -3,7 +3,7 @@
 namespace Tribe\Storage\Uploads;
 
 /**
- * Class Wp_Upload_Dir
+ * Class Wp_Upload_Dir.
  *
  * @package Tribe\Storage\Uploads
  */
@@ -17,7 +17,7 @@ class Wp_Upload_Dir {
 	protected static $original_dir;
 
 	/**
-	 * Add a original wp_upload_dir() array to the stack.
+	 * Add the original wp_upload_dir() array to the stack.
 	 *
 	 * @param  array  $original_dir
 	 */
