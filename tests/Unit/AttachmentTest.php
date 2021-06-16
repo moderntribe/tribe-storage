@@ -120,14 +120,6 @@ class AttachmentTest extends TestCase {
 		$this->assertSame( 'https://somedifferenturl.com/wp-content/uploads/sites/3/2016/12/cropped-Windows-logo2.png', $url );
 	}
 
-	public function test_it_reads_meta_data() {
-		$attachment = new Attachment( $this->filesystem, $this->upload_dir );
-
-		$meta = $attachment->image_metadata( [], '' );
-
-		$this->assertSame( $meta['title'], 'Some EXIF title' );
-	}
-
 	public function test_it_adds_filesize_to_missing_image_meta() {
 		$attachment = new Attachment( $this->filesystem, $this->upload_dir );
 

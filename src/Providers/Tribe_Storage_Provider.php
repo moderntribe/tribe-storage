@@ -59,10 +59,6 @@ class Tribe_Storage_Provider implements Providable {
 			return $this->attachment->attachment_url( $url, $attachment_id );
 		}, 10, 2 );
 
-		add_filter( 'wp_read_image_metadata', function ( array $meta, string $file ) {
-			return $this->attachment->image_metadata( $meta, $file );
-		}, 10, 2 );
-
 		add_filter( 'wp_get_attachment_metadata', function ( $meta, int $attachment_id ) {
 			return $this->attachment->get_metadata( $meta, $attachment_id );
 		}, 10, 2 );

@@ -67,39 +67,6 @@ class Attachment {
 	}
 
 	/**
-	 * Filter read image metadata since `exif_read_data` doesn't work with streams.
-	 *
-	 * @filter wp_read_image_metadata
-	 *
-	 * @param  array   $meta
-	 * @param  string  $file
-	 *
-	 * @return array
-	 */
-	public function image_metadata( array $meta, string $file ): array {
-		// Prevent infinite loops
-		static $ran;
-
-		if ( ! empty( $ran ) ) {
-			$ran = false;
-
-			return $meta;
-		}
-
-		if ( ! function_exists( 'wp_tempnam' ) ) {
-			require_once  ABSPATH . 'wp-admin/includes/file.php';
-		}
-
-		$temp_file = wp_tempnam( $file );
-		copy( $file, $temp_file );
-		$ran  = true;
-		$meta = wp_read_image_metadata( $temp_file );
-		unlink( $temp_file );
-
-		return $meta;
-	}
-
-	/**
 	 * Prevent WordPress from reading the filesize of every image by providing a dummy
 	 * size for images missing the meta option.
 	 *
