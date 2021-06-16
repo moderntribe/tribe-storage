@@ -43,4 +43,22 @@ class RenameTest extends StreamWrapperTestCase {
 		$this->assertFileExists( 'fly://testrenamed/test.txt' );
 	}
 
+	/**
+	 * For WordPress, we force all directories to exist to work around WordPress's
+	 * wp_upload_dir() doing file_exists() checks on the uploads directory.
+	 */
+	public function test_it_renames_a_directory_in_wordpress() {
+		// Define a constant that is always available in WordPress
+		define( 'ABSPATH', '/tmp');
+
+		// This will always return true
+		$this->assertDirectoryExists( 'fly://testwordpress' );
+		mkdir( 'fly://testwordpress' );
+		// For good measure
+		$this->assertDirectoryExists( 'fly://testwordpress' );
+		file_put_contents( 'fly://testwordpress/test.txt', 'filedata' );
+		$this->assertTrue( rename( 'fly://testwordpress', 'fly://testrenamedwordpress' ) );
+		$this->assertFileExists( 'fly://testrenamedwordpress/test.txt' );
+	}
+
 }
