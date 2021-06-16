@@ -2,11 +2,11 @@
 
 namespace Tribe\Storage\Uploads;
 
-use Throwable;
 use Intervention\Image\Exception\NotSupportedException;
 use Intervention\Image\ImageManager;
 use InvalidArgumentException;
 use League\Flysystem\Filesystem;
+use Throwable;
 use Tribe\Storage\Image_Editors\Image_Editor_GD;
 use Tribe\Storage\Image_Editors\Image_Editor_Imagick;
 
