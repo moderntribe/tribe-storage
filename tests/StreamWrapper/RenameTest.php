@@ -21,6 +21,11 @@ class RenameTest extends StreamWrapperTestCase {
 		@unlink( $this->renamed );
 		@unlink( 'fly://testrenamed/test.txt' );
 		@rmdir( 'fly://testrenamed' );
+
+		@unlink( 'fly://testwordpress/test.txt' );
+		@unlink( 'fly://testrenamedwordpress/test.txt' );
+		@rmdir( 'fly://testwordpress' );
+		@rmdir( 'fly://testrenamedwordpress' );
 		parent::tearDown();
 	}
 
