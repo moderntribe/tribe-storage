@@ -7,7 +7,7 @@ use WP_Error;
 use WP_Image_Editor_Imagick;
 
 /**
- * Class Image_Editor_Imagick
+ * Class Image_Editor_Imagick.
  *
  * @package Tribe\Storage\Image_Editors
  */
@@ -23,7 +23,7 @@ class Image_Editor_Imagick extends WP_Image_Editor_Imagick {
 	protected $temp_files = [];
 
 	/**
-	 * Remove temporary files
+	 * Remove temporary files.
 	 */
 	public function __destruct() {
 		array_map( 'unlink', $this->temp_files );
@@ -31,7 +31,7 @@ class Image_Editor_Imagick extends WP_Image_Editor_Imagick {
 	}
 
 	/**
-	 * Loads image from $this->file into new Imagick Object.
+	 * Loads the image from $this->file into a new Imagick Object.
 	 *
 	 * @return true|\WP_Error True if loaded; WP_Error on failure.
 	 */

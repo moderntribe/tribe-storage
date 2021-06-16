@@ -5,7 +5,7 @@ namespace Tribe\Storage\Cache;
 use Countable;
 
 /**
- * Last Recently Used Cache
+ * Last Recently Used Cache.
  *
  * @package Tribe\Storage\Cache
  */

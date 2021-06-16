@@ -3,7 +3,7 @@
 namespace Tribe\Storage\Cache;
 
 /**
- * Cache Item DTO
+ * Cache Item DTO.
  *
  * @package Tribe\Storage\Cache
  */

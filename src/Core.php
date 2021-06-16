@@ -6,7 +6,7 @@ use Psr\Container\ContainerInterface;
 use Tribe\Storage\Providers\Tribe_Storage_Provider;
 
 /**
- * Class Core
+ * The Core Plugin.
  *
  * @package Tribe\Storage\Uploads
  */
@@ -41,11 +41,11 @@ class Core {
 	 *
 	 * @param  \Psr\Container\ContainerInterface|null  $container
 	 *
-	 * @return \Tribe\Storage\Core
-	 *
 	 * @throws \Exception
+	 *
+	 * @return \Tribe\Storage\Core
 	 */
-	public static function instance( ?ContainerInterface $container = null ): self {
+	public static function instance( ?ContainerInterface $container = null ): Core {
 		if ( ! isset( self::$instance ) ) {
 			if ( empty( $container ) ) {
 				throw new \Exception( 'You need to provide a PHP-DI container' );
@@ -66,9 +66,6 @@ class Core {
 		$this->load_service_providers();
 	}
 
-	/**
-	 * @return \Psr\Container\ContainerInterface|null
-	 */
 	public function container(): ?ContainerInterface {
 		return $this->container;
 	}

@@ -5,14 +5,14 @@ namespace Tribe\Storage;
 use Throwable;
 
 /**
- * Build admin notices
+ * Build WordPress admin notices.
  *
  * @package Tribe\Storage
  */
 class Notice {
 
 	/**
-	 * Get an error message if they're using a misconfigured Adapter.
+	 * Get an error message if they're using a misconfigured adapter.
 	 *
 	 * @action tribe/storage/tribe/storage/adapter_error
 	 *
@@ -20,8 +20,8 @@ class Notice {
 	 *
 	 * @return string
 	 */
-	public function get_adapter_error_notice( \Throwable $e ): string {
-		if ( ! $this->is_admin() ) {
+	public function get_adapter_error_notice( Throwable $e ): string {
+		if ( ! $this->is_admin_user() ) {
 			return '';
 		}
 
@@ -31,7 +31,7 @@ class Notice {
 	}
 
 	/**
-	 * Print Notices to the Dashboard screen.
+	 * Print Notices to the WordPress Dashboard.
 	 *
 	 * @action admin_notices
 	 *
@@ -52,7 +52,7 @@ class Notice {
 	 *
 	 * @return bool
 	 */
-	protected function is_admin(): bool {
+	protected function is_admin_user(): bool {
 		return (bool) current_user_can( 'manage_options' );
 	}
 

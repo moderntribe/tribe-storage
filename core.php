@@ -29,7 +29,7 @@ add_action( 'plugins_loaded', static function (): void {
 }, 1, 0 );
 
 /**
- * Shorthand to get the instance of our main core plugin class
+ * Shorthand to get the instance of our main core plugin class.
  *
  * @return mixed
  *

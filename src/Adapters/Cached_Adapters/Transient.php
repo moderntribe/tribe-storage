@@ -6,24 +6,30 @@ use InvalidArgumentException;
 use League\Flysystem\Cached\Storage\AbstractCache;
 
 /**
- * Cache adapter meta in WordPress.
+ * Flysystem cache adapter to cache metadata in WordPress transients.
  *
  * @package Tribe\Storage\Adapters\Cached_Adapters
  */
 class Transient extends AbstractCache {
 
 	/**
-	 * @var string storage key
+	 * The storage key.
+	 *
+	 * @var string
 	 */
 	protected $key;
 
 	/**
-	 * @var int seconds until cache expire, 0 for forever.
+	 * Seconds until cache expire, 0 for forever.
+	 *
+	 * @var int
 	 */
 	protected $expire;
 
 	/**
-	 * @var bool whether to force transients to save to the db vs object cache
+	 * Whether to force transients to save to the db vs object cache.
+	 *
+	 * @var bool
 	 */
 	protected $force_db;
 

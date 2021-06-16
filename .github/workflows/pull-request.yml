@@ -37,12 +37,12 @@ jobs:
         with:
           list-files: shell
           filters: |
-            wpcontent:
+            src:
               - added|modified: 'src/**/*.php'
       - name: PHP CodeSniffer
-        if: ${{ steps.filter.outputs.wpcontent == 'true' }}
+        if: ${{ steps.filter.outputs.src == 'true' }}
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
-        run: ./vendor/bin/phpcs ${{ steps.filter.outputs.wpcontent_files }}
+        run: ./vendor/bin/phpcs ${{ steps.filter.outputs.src_files }}
       - name: Unit testing
         run: ./vendor/bin/phpunit
