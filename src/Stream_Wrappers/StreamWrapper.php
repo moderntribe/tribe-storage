@@ -678,13 +678,32 @@ class StreamWrapper {
 
 		$stat = $this->stat_template();
 
+		// This is running through WordPress
+		if ( defined( 'ABSPATH' ) ) {
+			$extension = pathinfo( $this->path, PATHINFO_EXTENSION );
+
+			/*
+			 * Force all directories to exist to work around WordPress's wp_upload_dir()
+			 * doing file_exists() checks on the uploads directory.
+			 */
+			if ( empty( $extension ) ) {
+				$stat[2] = $stat['mode'] = self::DIR_WRITABLE_MODE;
+				$stat[4] = $stat['uid'] = $this->identifier()->uid();
+				$stat[5] = $stat['gid'] = $this->identifier()->gid();
+
+				$this->cache()->set( $this->get_target(), $stat );
+
+				return $stat;
+			}
+		}
+
 		try {
 			// Try to get our information from Flysystem
 			$meta = $this->filesystem()->getMetadata( $this->get_target() );
 
 			// Even if this worked, it could be empty
 			if ( empty( $meta ) ) {
-				return $this->stat_template();
+				return $stat;
 			}
 
 			$type = $meta['type'] ?? '';
