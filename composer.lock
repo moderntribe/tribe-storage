@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0b3108b8cae4661660327dcbc30399b",
+    "content-hash": "c896e22e563dcc56b46ab76ecbb97d72",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -1306,16 +1306,16 @@
         },
         {
             "name": "symfony/lock",
-            "version": "v5.3.1",
+            "version": "v5.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/lock.git",
-                "reference": "cf21749b2733508f0e1031c0a531cefa3efca0b8"
+                "reference": "1f166823d4307eecd9f964804afefa2a59b9a3cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/lock/zipball/cf21749b2733508f0e1031c0a531cefa3efca0b8",
-                "reference": "cf21749b2733508f0e1031c0a531cefa3efca0b8",
+                "url": "https://api.github.com/repos/symfony/lock/zipball/1f166823d4307eecd9f964804afefa2a59b9a3cf",
+                "reference": "1f166823d4307eecd9f964804afefa2a59b9a3cf",
                 "shasum": ""
             },
             "require": {
@@ -1366,7 +1366,7 @@
                 "semaphore"
             ],
             "support": {
-                "source": "https://github.com/symfony/lock/tree/v5.3.1"
+                "source": "https://github.com/symfony/lock/tree/v5.3.2"
             },
             "funding": [
                 {
@@ -1382,7 +1382,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-01T18:47:32+00:00"
+            "time": "2021-06-06T09:51:56+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
@@ -4611,7 +4611,9 @@
     "platform": {
         "php": "^7.3"
     },
-    "platform-dev": [],
+    "platform-dev": {
+        "ext-exif": "*"
+    },
     "platform-overrides": {
         "php": "7.3.0"
     },

@@ -20,6 +20,7 @@
     "jhofm/flysystem-iterator": "^2.2"
   },
   "require-dev": {
+    "ext-exif":"*",
     "brain/monkey": "2.*",
     "phpunit/phpunit": "^9",
     "php-mock/php-mock-mockery": "^1.3",
