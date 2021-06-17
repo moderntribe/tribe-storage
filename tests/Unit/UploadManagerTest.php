@@ -83,6 +83,17 @@ class UploadManagerTest extends TestCase {
 		];
 	}
 
+	private function get_original_wp_upload_dir_subsite_no_subdir(): array {
+		return [
+			'path' => '/tmp/www/wp-content/uploads/sites/2',
+			'url' => 'https://example.com/en-us/wp-content/uploads/sites/2',
+			'subdir' => '',
+			'basedir' => '/tmp/www/wp-content/uploads/sites/2',
+			'baseurl' => 'https://example.com/en-us/wp-content/uploads/sites/2',
+			'error'   => false,
+		];
+	}
+
 	public function test_it_fixes_image_orientation() {
 		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
 
@@ -331,6 +342,36 @@ class UploadManagerTest extends TestCase {
 			'subdir'  => '/2020/09',
 			'basedir' => 'fly://sites/3',
 			'baseurl' => 'https://example.com/wp-content/uploads/sites/3',
+			'error'   => false,
+		], $wp_upload_dir );
+	}
+
+	public function test_it_filters_wp_upload_dir_with_stream_subsite_and_no_subdir() {
+		$this->upload_dir->shouldReceive( 'original_dir' )->once()->andReturn( $this->get_original_wp_upload_dir_subsite_no_subdir() );
+		$this->upload_dir->shouldReceive( 'add_dir' )->with( $this->get_original_wp_upload_dir_subsite_no_subdir() );
+
+		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
+
+		Filters\expectApplied( 'tribe/storage/upload/url' )
+			->once()
+			->with( 'https://example.com/en-us/wp-content/uploads/sites/2' );
+
+		Filters\expectApplied( 'tribe/storage/upload/base_path' )
+			->once()
+			->with( 'fly://' );
+
+		Filters\expectApplied( 'tribe/storage/stream_name' )
+			->once()
+			->with( 'fly' );
+
+		$wp_upload_dir = $upload_manager->upload_dir( $this->get_original_wp_upload_dir_subsite_no_subdir() );
+
+		$this->assertSame( [
+			'path'    => 'fly://sites/2',
+			'url'     => 'https://example.com/en-us/wp-content/uploads/sites/2',
+			'subdir'  => '',
+			'basedir' => 'fly://sites/2',
+			'baseurl' => 'https://example.com/en-us/wp-content/uploads/sites/2',
 			'error'   => false,
 		], $wp_upload_dir );
 	}
