@@ -69,6 +69,52 @@ class AttachmentTest extends TestCase {
 		$this->assertSame( 'https://somecndurl.com/wp-content/uploads/sites/3/2016/12/cropped-Windows-logo2.png', $url );
 	}
 
+	public function test_it_modifies_the_attachment_url_with_no_subdir() {
+		// Mock the already filtered wp_upload_dir() function
+		PHPMockery::mock( 'Tribe\Storage', 'wp_upload_dir' )->andReturn( [
+			'baseurl' => 'https://somecndurl.com/wp-content/uploads/sites/3',
+			'subdir'  => '',
+		] );
+
+		// Mock the original wp_upload_dir() output, before we changed anything.
+		$this->upload_dir->shouldReceive( 'original_dir' )->once()->andReturn( [
+			'baseurl' => 'https://originalwordpressurl.com/wp-content/uploads/sites/3',
+			'subdir'  => '',
+		] );
+
+		$this->filesystem->shouldReceive( 'getAdapter' )->once()->andReturn( $this->local_adapter );
+
+		Filters\expectApplied( 'tribe/storage/attachment_url' )
+			->once()
+			->with( \Mockery::type( 'string' ), \Mockery::type( 'int' ), Mockery::type( Local::class ) );
+
+		$attachment = new Attachment( $this->filesystem, $this->upload_dir );
+
+		$url = $attachment->attachment_url( 'https://originalwordpressurl.com/wp-content/uploads/sites/3/cropped-Windows-logo2.png', 1 );
+
+		$this->assertSame( 'https://somecndurl.com/wp-content/uploads/sites/3/cropped-Windows-logo2.png', $url );
+	}
+
+	public function test_it_modifies_the_attachment_url_with_language_prefix_and_no_subdir() {
+		// Mock the already filtered wp_upload_dir() function
+		PHPMockery::mock( 'Tribe\Storage', 'wp_upload_dir' )->andReturn( [
+			'baseurl' => 'https://example.com/en-us/wp-content/uploads/sites/3',
+			'subdir'  => '',
+		] );
+
+		$this->filesystem->shouldReceive( 'getAdapter' )->once()->andReturn( $this->local_adapter );
+
+		Filters\expectApplied( 'tribe/storage/attachment_url' )
+			->once()
+			->with( \Mockery::type( 'string' ), \Mockery::type( 'int' ), Mockery::type( Local::class ) );
+
+		$attachment = new Attachment( $this->filesystem, $this->upload_dir );
+
+		$url = $attachment->attachment_url( 'https://example.com/en-us/wp-content/uploads/sites/3/cropped-Windows-logo2.png', 1 );
+
+		$this->assertSame( 'https://example.com/en-us/wp-content/uploads/sites/3/cropped-Windows-logo2.png', $url );
+	}
+
 	public function test_it_does_not_modify_an_already_replaced_url() {
 		// Mock the already filtered wp_upload_dir() function
 		PHPMockery::mock( 'Tribe\Storage', 'wp_upload_dir' )->andReturn( [
