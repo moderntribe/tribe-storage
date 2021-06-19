@@ -55,13 +55,13 @@ class Image_Editor_Imagick extends WP_Image_Editor_Imagick {
 
 		copy( $this->file, $temp_filename );
 
-		$this->remote_filename = $this->file;
+		$remote_filename = $this->file;
 
 		$this->file = $temp_filename;
 
 		$result = parent::load();
 
-		$this->file = $this->remote_filename;
+		$this->file = $remote_filename;
 
 		return $result;
 	}
