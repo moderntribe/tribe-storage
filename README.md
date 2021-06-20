@@ -29,6 +29,7 @@ define( 'WP_CONTENT_URL', ( tribe_isSSL() ? 'https' : 'http' ) . '://' . $_SERVE
 
 **Requirements**
 - PHP7.3+
+- WordPress 5.6+
 - [Composer](https://getcomposer.org/)
 - [Composer Installers](https://composer.rarst.net/recipe/paths-control/)
 - The server should have PHP compiled with [ImageMagick](https://www.php.net/manual/en/book.imagick.php) or

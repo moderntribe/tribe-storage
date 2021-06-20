@@ -122,6 +122,10 @@ $tribe_storage_config = [
 			} );
 
 			$adapter = $c->get( Local_Adapter::class )->get();
+
+			// Fix max execution time outs when using the Local Adapter
+			// @see https://core.trac.wordpress.org/ticket/36534
+			putenv( 'MAGICK_THREAD_LIMIT=1' );
 		}
 
 		/**

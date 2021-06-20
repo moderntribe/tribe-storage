@@ -7,8 +7,6 @@ use Intervention\Image\ImageManager;
 use InvalidArgumentException;
 use League\Flysystem\Filesystem;
 use Throwable;
-use Tribe\Storage\Image_Editors\Image_Editor_GD;
-use Tribe\Storage\Image_Editors\Image_Editor_Imagick;
 
 /**
  * Class Upload_Manager.
@@ -173,7 +171,7 @@ class Upload_Manager {
 	}
 
 	/**
-	 * Remove default Image Editors and provide our own custom ones that supports streams.
+	 * Allow developers to force a specific Image Editor strategy.
 	 *
 	 * @filter wp_image_editors
 	 *
@@ -185,29 +183,21 @@ class Upload_Manager {
 	 * @throws \InvalidArgumentException
 	 */
 	public function image_editors( array $editors ): array {
-		$editors = array_diff( $editors, [ 'WP_Image_Editor_Imagick', 'WP_Image_Editor_GD' ] );
-
-		// Allow developers to force a specific Image Editor strategy
-		if ( defined( 'TRIBE_STORAGE_IMAGE_EDITOR' ) && TRIBE_STORAGE_IMAGE_EDITOR ) {
-			if ( 'gd' !== TRIBE_STORAGE_IMAGE_EDITOR && 'imagick' !== TRIBE_STORAGE_IMAGE_EDITOR ) {
-				throw new InvalidArgumentException(
-					__( 'Invalid image editor defined for TRIBE_STORAGE_IMAGE_EDITOR. Options are: "gd" or "imagick"', 'tribe-storage' )
-				);
-			}
-
-			if ( 'gd' === TRIBE_STORAGE_IMAGE_EDITOR ) {
-				array_unshift( $editors, Image_Editor_GD::class );
-			}
-
-			if ( 'imagick' === TRIBE_STORAGE_IMAGE_EDITOR ) {
-				array_unshift( $editors, Image_Editor_Imagick::class );
-			}
-		} else {
-			array_unshift( $editors, Image_Editor_GD::class );
-			array_unshift( $editors, Image_Editor_Imagick::class );
+		if ( ! defined( 'TRIBE_STORAGE_IMAGE_EDITOR' ) || ! TRIBE_STORAGE_IMAGE_EDITOR ) {
+			return (array) $editors;
 		}
 
-		return (array) $editors;
+		if ( 'gd' !== TRIBE_STORAGE_IMAGE_EDITOR && 'imagick' !== TRIBE_STORAGE_IMAGE_EDITOR ) {
+			throw new InvalidArgumentException(
+				__( 'Invalid image editor defined for TRIBE_STORAGE_IMAGE_EDITOR. Options are: "gd" or "imagick"', 'tribe-storage' )
+			);
+		}
+
+		if ( 'gd' === TRIBE_STORAGE_IMAGE_EDITOR ) {
+			return [ 'WP_Image_Editor_GD' ];
+		}
+
+		return [ 'WP_Image_Editor_Imagick' ];
 	}
 
 }
