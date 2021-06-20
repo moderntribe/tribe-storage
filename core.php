@@ -1,16 +1,20 @@
 <?php declare(strict_types=1);
 
-/*
-Plugin Name: Tribe Storage
-Plugin URI: https://tri.be
-Description: Replace the WordPress filesystem with Flypress adapters. Allows the use of multiple cloud storage providers.
-Author:      Modern Tribe
-Author URI:  https://tri.be
-Version:     1.1.2
-*/
+/**
+ * Plugin Name:        Tribe Storage
+ * Plugin URI:         https://tri.be
+ * Description:        Replace the WordPress filesystem with Flypress adapters. Allows the use of multiple cloud storage providers.
+ * Author:             Modern Tribe
+ * Author URI:         https://tri.be
+ * Text Domain:        tribe-storage
+ * Version:            2.0.0
+ * Requires at least:  5.6
+ * Requires PHP:       7.3
+ */
 
 use DI\ContainerBuilder;
 use Tribe\Storage\Core;
+use Tribe\Storage\Plugin\Plugin_Loader;
 
 // Require the vendor folder via multiple locations
 $autoloaders = [
@@ -38,8 +42,11 @@ add_action( 'plugins_loaded', static function (): void {
 function tribe_storage(): Core {
 	$builder = new ContainerBuilder();
 
-	if ( class_exists( \Tribe\Storage\Adapters\S3_Definition_Provider::class ) ) {
-		$builder->addDefinitions( ( new \Tribe\Storage\Adapters\S3_Definition_Provider() )->get() );
+	// Load plugin container definitions
+	$plugin_definitions = Plugin_Loader::get_instance()->get_definitions();
+
+	foreach ( $plugin_definitions as $definition_provider ) {
+		$builder->addDefinitions( $definition_provider->get_definitions() );
 	}
 
 	$builder->addDefinitions( __DIR__ . '/config.php' );
