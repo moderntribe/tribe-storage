@@ -52,7 +52,7 @@ class Plugin_Loader {
 	/**
 	 * @throws \Exception
 	 */
-	protected function __wakeup(): void {
+	public function __wakeup(): void {
 		throw new Exception( 'Singletons do not support unserialize' );
 	}
 
