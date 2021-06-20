@@ -202,7 +202,7 @@ class UploadManagerTest extends TestCase {
 		$upload_manager->fix_image_orientation( null, $file, '', '' );
 	}
 
-	public function test_it_removes_image_editors() {
+	public function test_it_returns_all_image_editors_by_default() {
 		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
 
 		$editors = [
@@ -214,10 +214,8 @@ class UploadManagerTest extends TestCase {
 		$filtered_editors = $upload_manager->image_editors( $editors );
 
 		$this->assertCount( 3, $filtered_editors );
-		$this->assertNotContains( 'WP_Image_Editor_Imagick', $filtered_editors );
-		$this->assertNotContains( 'WP_Image_Editor_GD', $filtered_editors );
-		$this->assertContains( Image_Editor_GD::class, $filtered_editors );
-		$this->assertContains( Image_Editor_Imagick::class, $filtered_editors );
+		$this->assertContains( 'WP_Image_Editor_GD', $filtered_editors );
+		$this->assertContains( 'WP_Image_Editor_Imagick', $filtered_editors );
 		$this->assertContains( 'Random_3rd_Party_Editor', $filtered_editors );
 	}
 
@@ -234,8 +232,8 @@ class UploadManagerTest extends TestCase {
 		$filtered_editors = $upload_manager->image_editors( $editors );
 
 		$this->assertCount( 1, $filtered_editors );
-		$this->assertContains( Image_Editor_GD::class, $filtered_editors );
-		$this->assertNotContains( Image_Editor_Imagick::class, $filtered_editors );
+		$this->assertContains( 'WP_Image_Editor_GD', $filtered_editors );
+		$this->assertNotContains( 'WP_Image_Editor_Imagick', $filtered_editors );
 	}
 
 	public function test_it_forces_custom_imagick_image_editor() {
@@ -251,8 +249,8 @@ class UploadManagerTest extends TestCase {
 		$filtered_editors = $upload_manager->image_editors( $editors );
 
 		$this->assertCount( 1, $filtered_editors );
-		$this->assertContains( Image_Editor_Imagick::class, $filtered_editors );
-		$this->assertNotContains( Image_Editor_GD::class, $filtered_editors );
+		$this->assertContains( 'WP_Image_Editor_Imagick', $filtered_editors );
+		$this->assertNotContains( 'WP_Image_Editor_GD', $filtered_editors );
 	}
 
 	public function test_it_filters_wp_upload_dir_with_stream() {
