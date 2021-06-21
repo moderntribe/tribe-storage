@@ -66,7 +66,7 @@ class Core {
 			}
 
 			$className      = self::class;
-			self::$instance = new $className( $container );
+			self::$instance = new $className( $container, $loader );
 		}
 
 		return self::$instance;
