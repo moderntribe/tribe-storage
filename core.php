@@ -7,7 +7,7 @@
  * Author:             Modern Tribe
  * Author URI:         https://tri.be
  * Text Domain:        tribe-storage
- * Version:            2.0.0
+ * Version:            2.0.2
  * Requires at least:  5.6
  * Requires PHP:       7.3
  */
@@ -40,17 +40,16 @@ add_action( 'plugins_loaded', static function (): void {
  * @throws \Exception
  */
 function tribe_storage(): Core {
-	$builder = new ContainerBuilder();
+	$builder       = new ContainerBuilder();
+	$plugin_loader = Plugin_Loader::get_instance();
 
 	// Load plugin container definitions
-	$plugin_definitions = Plugin_Loader::get_instance()->get_definitions();
-
-	foreach ( $plugin_definitions as $definition_provider ) {
+	foreach ( $plugin_loader->definition_providers() as $definition_provider ) {
 		$builder->addDefinitions( $definition_provider->get_definitions() );
 	}
 
 	$builder->addDefinitions( __DIR__ . '/config.php' );
 	$container = $builder->build();
 
-	return Core::instance( $container );
+	return Core::instance( $container, $plugin_loader );
 }
