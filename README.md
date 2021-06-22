@@ -141,3 +141,7 @@ Create a Flysystem bridge. See [/src/Adapters/Adapter.php](./src/Adapters/Adapte
 `Adapter::get(): AdapterInterface;`
 
 The `get()` method should return a configured Flysystem adapter.
+
+## More Resources:
+- [Tribe Storage Statically.io CDN](https://github.com/moderntribe/tribe-storage-statically-cdn)
+- [Modern Tribe](https://tri.be/)
