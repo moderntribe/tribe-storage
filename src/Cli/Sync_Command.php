@@ -79,7 +79,6 @@ class Sync_Command extends Command {
 				$this->process_attachment( $show_detail, $dry_run, (int) $site->blog_id );
 				restore_current_blog();
 			}
-
 		} else {
 			$this->process_attachment( $show_detail, $dry_run, 1 );
 		}
