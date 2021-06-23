@@ -17,10 +17,6 @@ class Cli_Provider implements Providable {
 
 	public function register(): void {
 		add_action( 'init', function (): void {
-			if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
-				return;
-			}
-
 			foreach ( $this->commands as $command ) {
 				$command->register();
 			}

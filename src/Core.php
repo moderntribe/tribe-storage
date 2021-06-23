@@ -90,7 +90,10 @@ class Core {
 	 */
 	private function configure_service_providers(): void {
 		$this->providers[] = $this->container->make( Tribe_Storage_Provider::class );
-		$this->providers[] = $this->container->make( Cli_Provider::class );
+
+		if ( $this->is_wp_cli() ) {
+			$this->providers[] = $this->container->make( Cli_Provider::class );
+		}
 
 		// Load plugin service providers
 		foreach ( $this->plugin_loader->service_providers() as $provider ) {
@@ -107,6 +110,10 @@ class Core {
 		foreach ( $this->providers as $provider ) {
 			$provider->register();
 		}
+	}
+
+	private function is_wp_cli(): bool {
+		return defined( 'WP_CLI' ) && WP_CLI;
 	}
 
 }
