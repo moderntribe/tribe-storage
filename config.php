@@ -17,6 +17,8 @@ use Tribe\Storage\Adapters\Cached_Adapters\Transient;
 use Tribe\Storage\Adapters\Local_Adapter;
 use Tribe\Storage\Cache\Cache;
 use Tribe\Storage\Cache\Lru;
+use Tribe\Storage\Cli\Sync_Command;
+use Tribe\Storage\Providers\Cli_Provider;
 use Tribe\Storage\Stream_Wrappers\Identity\Fallback_Identifier;
 use Tribe\Storage\Stream_Wrappers\Identity\Identifier;
 use Tribe\Storage\Stream_Wrappers\Identity\Posix_Identifier;
@@ -206,6 +208,15 @@ $tribe_storage_config = [
 		$driver = defined( 'TRIBE_STORAGE_IMAGE_EDITOR' ) ? TRIBE_STORAGE_IMAGE_EDITOR : 'imagick';
 
 		return new ImageManager( [ 'driver' => $driver ] );
+	},
+
+	/**
+	 * Register our WP CLI commands.
+	 */
+	Cli_Provider::class     => static function ( ContainerInterface $c ) {
+		return new Cli_Provider( [
+			$c->get( Sync_Command::class ),
+		] );
 	},
 ];
 

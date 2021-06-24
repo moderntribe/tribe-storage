@@ -5,6 +5,7 @@ namespace Tribe\Storage;
 use Exception;
 use Psr\Container\ContainerInterface;
 use Tribe\Storage\Plugin\Plugin_Loader;
+use Tribe\Storage\Providers\Cli_Provider;
 use Tribe\Storage\Providers\Tribe_Storage_Provider;
 
 /**
@@ -90,6 +91,10 @@ class Core {
 	private function configure_service_providers(): void {
 		$this->providers[] = $this->container->make( Tribe_Storage_Provider::class );
 
+		if ( $this->is_wp_cli() ) {
+			$this->providers[] = $this->container->make( Cli_Provider::class );
+		}
+
 		// Load plugin service providers
 		foreach ( $this->plugin_loader->service_providers() as $provider ) {
 			$this->providers[] = $this->container->make( $provider );
@@ -105,6 +110,10 @@ class Core {
 		foreach ( $this->providers as $provider ) {
 			$provider->register();
 		}
+	}
+
+	private function is_wp_cli(): bool {
+		return defined( 'WP_CLI' ) && WP_CLI;
 	}
 
 }
