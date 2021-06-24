@@ -110,10 +110,10 @@ class Sync_Command extends Command {
 
 		$progress = WP_CLI\Utils\make_progress_bar( __( 'Syncing images to your cloud provider', 'tribe-storage' ), count( $query->posts ) );
 
+		$upload_dir = wp_get_upload_dir();
+
 		/** @var \WP_Post $attachment */
 		foreach ( $query->posts as $attachment ) {
-			$upload_dir = wp_get_upload_dir();
-
 			// Return the upload dir to the original before being modified by tribe storage
 			add_filter( 'upload_dir', function ( array $dirs ) {
 				return $this->upload_dir->original_dir( get_current_blog_id() );
@@ -151,7 +151,12 @@ class Sync_Command extends Command {
 				}
 
 				try {
-					$this->filesystem->copy( $file, $remote_file );
+					$stream = fopen( $file, 'r+' );
+					$this->filesystem->writeStream( $this->get_target( $remote_file ), $stream );
+
+					if ( is_resource( $stream ) ) {
+						fclose( $stream );
+					}
 				} catch ( Throwable $e ) {
 					$this->log[ self::LOG_WARNING ][] = sprintf( __( '[ATTACHMENT ID: %d, FILE: %s]: An error occurred copying to cloud provider: %s.', 'tribe-storage' ), $attachment->ID, $file, $e->getMessage() );
 					continue;
@@ -186,6 +191,19 @@ class Sync_Command extends Command {
 		) );
 
 		$this->log = [];
+	}
+
+	/**
+	 * Returns the local writable target of the resource within the stream.
+	 *
+	 * @param  string  $path  The URI.
+	 *
+	 * @return string The path appropriate for use with Flysystem.
+	 */
+	protected function get_target( string $path = '' ): string {
+		$target = substr( $path, strpos( $path, '://' ) + 3 );
+
+		return $target === false ? '' : $target;
 	}
 
 	protected function command(): string {
