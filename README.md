@@ -22,7 +22,9 @@ function tribe_isSSL(): bool {
 	return ( ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' );
 }
 
-define( 'WP_CONTENT_URL', ( tribe_isSSL() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . '/wp-content' );
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+
+define( 'WP_CONTENT_URL', ( tribe_isSSL() ? 'https' : 'http' ) . '://' . $host . '/wp-content' );
 ```
 
 ## Installation
