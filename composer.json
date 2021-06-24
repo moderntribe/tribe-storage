@@ -2,14 +2,32 @@
   "name": "moderntribe/tribe-storage",
   "description": "A WordPress plugin to upload files to many different storage types like Azure, s3, DO Spaces",
   "type": "wordpress-plugin",
+  "keywords": [
+    "moderntribe",
+    "offload",
+    "media",
+    "flysystem",
+    "cloud-storage",
+    "azure",
+    "s3",
+    "aws",
+    "google-cloud-storage",
+    "digital-oceans-spaces",
+    "rackspace",
+    "wasabi",
+    "wordpress"
+  ],
   "authors": [
     {
+      "name": "Justin Frydman",
+      "role": "Developer"
+    },
+    {
       "name": "Modern Tribe",
-      "email": "admin@tri.be"
+      "email": "admin@tri.be",
+      "homepage": "https://tri.be"
     }
   ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "require": {
     "php": "^7.3",
     "php-di/php-di": "^6.0",
@@ -41,8 +59,11 @@
     ]
   },
   "config": {
+    "sort-packages": true,
     "platform": {
       "php": "7.3.0"
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
