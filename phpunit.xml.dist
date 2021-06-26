@@ -8,9 +8,6 @@
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
-        <testsuite name="StreamWrapper">
-            <directory suffix="Test.php">./tests/StreamWrapper</directory>
-        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

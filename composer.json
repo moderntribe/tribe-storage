@@ -28,6 +28,12 @@
       "homepage": "https://tri.be"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:moderntribe/flysystem-stream-wrapper.git"
+    }
+  ],
   "require": {
     "php": "^7.3",
     "php-di/php-di": "^6.0",
@@ -35,7 +41,8 @@
     "league/flysystem-cached-adapter": "^1.1",
     "intervention/image": "^2.5",
     "symfony/lock": "^5.2",
-    "jhofm/flysystem-iterator": "^2.2"
+    "jhofm/flysystem-iterator": "^2.2",
+    "moderntribe/flysystem-stream-wrapper": "^1.0"
   },
   "require-dev": {
     "ext-exif":"*",

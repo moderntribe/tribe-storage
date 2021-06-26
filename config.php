@@ -18,11 +18,10 @@ use Tribe\Storage\Adapters\Local_Adapter;
 use Tribe\Storage\Cache\Cache;
 use Tribe\Storage\Cache\Lru;
 use Tribe\Storage\Cli\Sync_Command;
+use Tribe\Storage\Identity\Fallback_Identifier;
+use Tribe\Storage\Identity\Identifier;
+use Tribe\Storage\Identity\Posix_Identifier;
 use Tribe\Storage\Providers\Cli_Provider;
-use Tribe\Storage\Stream_Wrappers\Identity\Fallback_Identifier;
-use Tribe\Storage\Stream_Wrappers\Identity\Identifier;
-use Tribe\Storage\Stream_Wrappers\Identity\Posix_Identifier;
-use Tribe\Storage\Stream_Wrappers\StreamWrapper;
 
 /**
  * PHP-DI container configuration.
