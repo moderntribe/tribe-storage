@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7628e90306fa61689292921771ed6b31",
+    "content-hash": "3e1f5c8f5c1683414d1787b9e8f75db8",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -701,6 +701,90 @@
                 "source": "https://github.com/Azure/azure-storage-common-php/tree/v1.5.1"
             },
             "time": "2020-12-28T07:59:51+00:00"
+        },
+        {
+            "name": "moderntribe/flysystem-stream-wrapper",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moderntribe/flysystem-stream-wrapper.git",
+                "reference": "f2f8ce24eac26178415b03695028d8c114b5d30a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moderntribe/flysystem-stream-wrapper/zipball/f2f8ce24eac26178415b03695028d8c114b5d30a",
+                "reference": "f2f8ce24eac26178415b03695028d8c114b5d30a",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/psr7": "^1.5",
+                "jhofm/flysystem-iterator": "^2.2",
+                "league/flysystem": "^1.0",
+                "php": "^7.3",
+                "symfony/lock": "^5.2"
+            },
+            "require-dev": {
+                "ext-exif": "*",
+                "league/flysystem-aws-s3-v3": "^1.0",
+                "moderntribe/coding-standards": "^2.0",
+                "php-mock/php-mock-mockery": "^1.3",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tribe\\Storage\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tribe\\Storage\\Tests\\": "tests"
+                },
+                "files": [
+                    "tests/Bootstrap.php"
+                ]
+            },
+            "scripts": {
+                "up": [
+                    "docker-compose --project-directory docker --project-name flysystem up -d --force-recreate"
+                ],
+                "down": [
+                    "docker-compose --project-directory docker --project-name flysystem down --remove-orphans"
+                ],
+                "shell": [
+                    "docker exec -it flysystem_php-tests_1 /bin/bash"
+                ],
+                "test": [
+                    "@up",
+                    "docker exec -it -w /application/www flysystem_php-tests_1 /usr/local/bin/php /application/www/vendor/bin/phpunit"
+                ],
+                "test-ci": [
+                    "docker exec -i -w /application/www flysystem_php-tests_1 /usr/local/bin/php /application/www/vendor/bin/phpunit"
+                ]
+            },
+            "authors": [
+                {
+                    "name": "Justin Frydman",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Modern Tribe",
+                    "email": "admin@tri.be",
+                    "homepage": "https://tri.be"
+                }
+            ],
+            "description": "A PHP Stream Wrapper for Flysystem",
+            "keywords": [
+                "flysystem",
+                "moderntribe",
+                "stream-wrapper",
+                "streamwrapper"
+            ],
+            "support": {
+                "source": "https://github.com/moderntribe/flysystem-stream-wrapper/tree/v1.0.0",
+                "issues": "https://github.com/moderntribe/flysystem-stream-wrapper/issues"
+            },
+            "time": "2021-06-26T19:15:42+00:00"
         },
         {
             "name": "opis/closure",
