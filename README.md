@@ -45,6 +45,10 @@ Add the following to the composer.json repositories object:
   "repositories": [
       {
         "type": "vcs",
+        "url": "git@github.com:moderntribe/flysystem-stream-wrapper.git"
+      },        
+      {
+        "type": "vcs",
         "url": "git@github.com:moderntribe/tribe-storage.git"
       },
   ]
