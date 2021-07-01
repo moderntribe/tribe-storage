@@ -55,7 +55,10 @@
   "autoload": {
     "psr-4": {
       "Tribe\\Storage\\": "src"
-    }
+    },
+    "files": [
+      "plugin-loader.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
