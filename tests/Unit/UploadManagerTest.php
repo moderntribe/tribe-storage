@@ -2,18 +2,18 @@
 
 namespace Tribe\Storage\Tests\Unit;
 
-use Mockery;
 use Brain\Monkey\Filters;
+use Intervention\Image\Exception\NotSupportedException;
 use Intervention\Image\Image;
-use phpmock\mockery\PHPMockery;
-use League\Flysystem\Filesystem;
-use Tribe\Storage\Tests\TestCase;
 use Intervention\Image\ImageManager;
-use Tribe\Storage\Uploads\Wp_Upload_Dir;
-use Tribe\Storage\Uploads\Upload_Manager;
+use League\Flysystem\Filesystem;
+use Mockery;
+use phpmock\mockery\PHPMockery;
 use Tribe\Storage\Image_Editors\Image_Editor_GD;
 use Tribe\Storage\Image_Editors\Image_Editor_Imagick;
-use Intervention\Image\Exception\NotSupportedException;
+use Tribe\Storage\Tests\TestCase;
+use Tribe\Storage\Uploads\Upload_Manager;
+use Tribe\Storage\Uploads\Wp_Upload_Dir;
 
 /**
  * @runTestsInSeparateProcesses
@@ -403,6 +403,32 @@ class UploadManagerTest extends TestCase {
 			'baseurl' => 'https://example.com/wp-content/uploads/prod/sites/3',
 			'error'   => false,
 		], $wp_upload_dir );
+	}
+
+	public function test_it_adds_a_fake_file() {
+		$this->filesystem->shouldReceive( 'has' )->once()->with( 'fly://sites/4/2020/09/test.jpg' )->andReturnFalse();
+
+		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
+		$files          = $upload_manager->bypass_directory_listing( [], 'fly://sites/4/2020/09', 'test.jpg' );
+
+		$this->assertCount( 1, $files );
+		$this->assertContains(
+			'3debf56855bad8fa0d38d4eb45efe98432d549612703f0b04f7e2ebe9ef28a863fdffc5a8b322524712cf26f5e7efc4ea5a19255f0d30a527e9306b7ee49e2d3.jpg',
+			$files
+		);
+	}
+
+	public function test_it_finds_a_duplicate_file() {
+		$this->filesystem->shouldReceive( 'has' )->once()->with( 'fly://sites/4/2020/09/test.jpg' )->andReturnTrue();
+
+		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
+		$files          = $upload_manager->bypass_directory_listing( [], 'fly://sites/4/2020/09', 'test.jpg' );
+
+		$this->assertCount( 1, $files );
+		$this->assertContains(
+			'test.jpg',
+			$files
+		);
 	}
 
 }

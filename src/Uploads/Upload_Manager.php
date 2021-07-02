@@ -200,4 +200,48 @@ class Upload_Manager {
 		return [ 'WP_Image_Editor_Imagick' ];
 	}
 
+	/**
+	 * Prevent WordPress from doing full directory listings on remote storage
+	 * when uploading files.
+	 *
+	 * @filter get_files_for_unique_filename_file_list
+	 *
+	 * @param  array|null  $files
+	 * @param  string      $dir
+	 * @param  string      $filename
+	 *
+	 * @return array
+	 */
+	public function bypass_directory_listing( ?array $files, string $dir, string $filename ): array {
+		$full_path = trailingslashit( $dir ) . $filename;
+		$exists    = $this->filesystem->has( $full_path );
+
+		$meep = wp_get_additional_image_sizes();
+		$moop = get_intermediate_image_sizes();
+
+		// This file exists, return it WordPress so it can make it unique
+		if ( $exists ) {
+			return [
+				$filename,
+			];
+		}
+
+		// Default to a file that is highly unlikely to exist, so WordPress will do its regular processing
+		return [
+			$this->get_fake_file_name(),
+		];
+	}
+
+	/**
+	 * Create a file name that is highly unlikely to exist on remote storage.
+	 *
+	 * @return string
+	 */
+	protected function get_fake_file_name(): string {
+		return (string) apply_filters(
+			'tribe/storage/upload/fake_file_name',
+			'3debf56855bad8fa0d38d4eb45efe98432d549612703f0b04f7e2ebe9ef28a863fdffc5a8b322524712cf26f5e7efc4ea5a19255f0d30a527e9306b7ee49e2d3.jpg'
+		);
+	}
+
 }
