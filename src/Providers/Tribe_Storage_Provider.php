@@ -86,6 +86,10 @@ class Tribe_Storage_Provider implements Providable {
 		add_filter( 'wp_image_editors', function ( array $editors ) {
 			return $this->upload_dir->image_editors( $editors );
 		}, 9, 1 );
+
+		add_filter( 'pre_wp_unique_filename_file_list', function ( $files, $dir, $filename ) {
+			return $this->upload_dir->filter_unique_file_list( $files, (string) $dir, (string) $filename );
+		}, 10, 3);
 	}
 
 	/**

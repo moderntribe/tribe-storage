@@ -5,6 +5,7 @@ namespace Tribe\Storage\Uploads;
 use Intervention\Image\Exception\NotSupportedException;
 use Intervention\Image\ImageManager;
 use InvalidArgumentException;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use League\Flysystem\Filesystem;
 use Throwable;
 
@@ -198,6 +199,43 @@ class Upload_Manager {
 		}
 
 		return [ 'WP_Image_Editor_Imagick' ];
+	}
+
+	/**
+	 * Selectively filter the directory listing for similar file names rather
+	 * than getting a full file list.
+	 *
+	 * @filter pre_wp_unique_filename_file_list
+	 *
+	 * @param  array|null  $files
+	 * @param  string      $dir
+	 * @param  string      $filename
+	 *
+	 * @return array
+	 */
+	public function filter_unique_file_list( ?array $files, string $dir, string $filename ): array {
+		$name = pathinfo( $filename, PATHINFO_FILENAME );
+		$dir  = substr( $dir, strpos( $dir, '://' ) + 3 );
+
+		/** @var \Jhofm\FlysystemIterator\FilesystemIterator $iterator */
+		$iterator = $this->filesystem->createIterator( [
+			'recursive' => false,
+			'filter'    => FilterFactory::and(
+				FilterFactory::isFile(),
+				FilterFactory::pathContainsString( $name )
+			),
+		], $dir );
+
+		// Continue to short circuit WordPress's comparison if no results found
+		if ( $iterator->count() < 1 ) {
+			return [];
+		}
+
+		foreach ( $iterator as $item ) {
+			$files[] = $item['basename'];
+		}
+
+		return $files;
 	}
 
 }

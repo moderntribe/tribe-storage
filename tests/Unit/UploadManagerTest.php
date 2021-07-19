@@ -2,18 +2,18 @@
 
 namespace Tribe\Storage\Tests\Unit;
 
-use Mockery;
 use Brain\Monkey\Filters;
-use Intervention\Image\Image;
-use phpmock\mockery\PHPMockery;
-use League\Flysystem\Filesystem;
-use Tribe\Storage\Tests\TestCase;
-use Intervention\Image\ImageManager;
-use Tribe\Storage\Uploads\Wp_Upload_Dir;
-use Tribe\Storage\Uploads\Upload_Manager;
-use Tribe\Storage\Image_Editors\Image_Editor_GD;
-use Tribe\Storage\Image_Editors\Image_Editor_Imagick;
 use Intervention\Image\Exception\NotSupportedException;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
+use Jhofm\FlysystemIterator\FilesystemIterator;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
+use League\Flysystem\Filesystem;
+use Mockery;
+use phpmock\mockery\PHPMockery;
+use Tribe\Storage\Tests\TestCase;
+use Tribe\Storage\Uploads\Upload_Manager;
+use Tribe\Storage\Uploads\Wp_Upload_Dir;
 
 /**
  * @runTestsInSeparateProcesses
@@ -403,6 +403,86 @@ class UploadManagerTest extends TestCase {
 			'baseurl' => 'https://example.com/wp-content/uploads/prod/sites/3',
 			'error'   => false,
 		], $wp_upload_dir );
+	}
+
+	public function test_it_finds_no_duplicate_files() {
+		$this->filesystem->shouldReceive( 'listContents' )->once()->andReturn( [] );
+		$this->filesystem->shouldReceive( 'createIterator' )
+		                 ->once()
+		                 ->andReturn( new FilesystemIterator( $this->filesystem, 'sites/4/2020/09/test-1.jpg' ), [
+			                 'recursive' => false,
+			                 'filter'    => FilterFactory::and(
+				                 FilterFactory::isFile(),
+				                 FilterFactory::pathContainsString( 'test-1' )
+			                 ),
+		                 ] );
+
+		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
+		$files          = $upload_manager->filter_unique_file_list( [], 'fly://sites/4/2020/09', 'test-1.jpg' );
+
+		$this->assertEmpty( $files );
+	}
+
+	public function test_it_finds_a_duplicate_file_of_the_same_name() {
+		$this->filesystem->shouldReceive( 'listContents' )->once()->andReturn( [
+			[
+				'path'     => 'sites/4/2020/09/test-1.jpg',
+				'basename' => 'test-1.jpg',
+			],
+		] );
+		$this->filesystem->shouldReceive( 'createIterator' )
+		                 ->once()
+		                 ->andReturn( new FilesystemIterator( $this->filesystem, 'sites/4/2020/09/test-1.jpg' ), [
+			                 'recursive' => false,
+			                 'filter'    => FilterFactory::and(
+				                 FilterFactory::isFile(),
+				                 FilterFactory::pathContainsString( 'test-1' )
+			                 ),
+		                 ] );
+
+		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
+		$files          = $upload_manager->filter_unique_file_list( [], 'fly://sites/4/2020/09', 'test-1.jpg' );
+
+		$this->assertCount( 1, $files );
+		$this->assertContains(
+			'test-1.jpg',
+			$files
+		);
+	}
+
+	public function test_it_finds_a_duplicate_wordpress_thumbnail_files() {
+		$this->filesystem->shouldReceive( 'listContents' )->once()->andReturn( [
+			[
+				'path'     => 'sites/4/2020/09/test-1-150x150.jpg',
+				'basename' => 'test-1-150x150.jpg',
+			],
+			[
+				'path'     => 'sites/4/2020/09/test-1-300x300.jpg',
+				'basename' => 'test-1-300x300.jpg',
+			],
+		] );
+		$this->filesystem->shouldReceive( 'createIterator' )
+		                 ->once()
+		                 ->andReturn( new FilesystemIterator( $this->filesystem, 'sites/4/2020/09/test-1.jpg' ), [
+			                 'recursive' => false,
+			                 'filter'    => FilterFactory::and(
+				                 FilterFactory::isFile(),
+				                 FilterFactory::pathContainsString( 'test-1' )
+			                 ),
+		                 ] );
+
+		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
+		$files          = $upload_manager->filter_unique_file_list( [], 'fly://sites/4/2020/09', 'test-1.jpg' );
+
+		$this->assertCount( 2, $files );
+		$this->assertContains(
+			'test-1-150x150.jpg',
+			$files
+		);
+		$this->assertContains(
+			'test-1-300x300.jpg',
+			$files
+		);
 	}
 
 }
