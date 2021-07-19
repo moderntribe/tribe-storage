@@ -5,6 +5,7 @@ namespace Tribe\Storage\Uploads;
 use Intervention\Image\Exception\NotSupportedException;
 use Intervention\Image\ImageManager;
 use InvalidArgumentException;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use League\Flysystem\Filesystem;
 use Throwable;
 
@@ -201,8 +202,8 @@ class Upload_Manager {
 	}
 
 	/**
-	 * Prevent WordPress from doing full directory listings on remote storage
-	 * when uploading files.
+	 * Selectively filter the directory listing for similar file names rather
+	 * than getting a full file list.
 	 *
 	 * @filter pre_wp_unique_filename_file_list
 	 *
@@ -212,33 +213,29 @@ class Upload_Manager {
 	 *
 	 * @return array
 	 */
-	public function bypass_directory_listing( ?array $files, string $dir, string $filename ): array {
-		$full_path = trailingslashit( $dir ) . $filename;
-		$exists    = $this->filesystem->has( $full_path );
+	public function filter_unique_file_list( ?array $files, string $dir, string $filename ): array {
+		$name = pathinfo( $filename, PATHINFO_FILENAME );
+		$dir  = substr( $dir, strpos( $dir, '://' ) + 3 );
 
-		// This file exists, return it to WordPress so it can make it unique
-		if ( $exists ) {
-			return [
-				$filename,
-			];
+		/** @var \Jhofm\FlysystemIterator\FilesystemIterator $iterator */
+		$iterator = $this->filesystem->createIterator( [
+			'recursive' => false,
+			'filter'    => FilterFactory::and(
+				FilterFactory::isFile(),
+				FilterFactory::pathContainsString( $name )
+			),
+		], $dir );
+
+		// Continue to short circuit WordPress's comparison if no results found
+		if ( $iterator->count() < 1 ) {
+			return [];
 		}
 
-		// Default to a file that is highly unlikely to exist, so WordPress will do its regular processing
-		return [
-			$this->get_fake_file_name(),
-		];
-	}
+		foreach ( $iterator as $item ) {
+			$files[] = $item['basename'];
+		}
 
-	/**
-	 * Create a file name that is highly unlikely to exist on remote storage.
-	 *
-	 * @return string
-	 */
-	protected function get_fake_file_name(): string {
-		return (string) apply_filters(
-			'tribe/storage/upload/fake_file_name',
-			'3debf56855bad8fa0d38d4eb45efe98432d549612703f0b04f7e2ebe9ef28a863fdffc5a8b322524712cf26f5e7efc4ea5a19255f0d30a527e9306b7ee49e2d3.jpg'
-		);
+		return $files;
 	}
 
 }
