@@ -6,11 +6,11 @@ use Brain\Monkey\Filters;
 use Intervention\Image\Exception\NotSupportedException;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
+use Jhofm\FlysystemIterator\FilesystemIterator;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use League\Flysystem\Filesystem;
 use Mockery;
 use phpmock\mockery\PHPMockery;
-use Tribe\Storage\Image_Editors\Image_Editor_GD;
-use Tribe\Storage\Image_Editors\Image_Editor_Imagick;
 use Tribe\Storage\Tests\TestCase;
 use Tribe\Storage\Uploads\Upload_Manager;
 use Tribe\Storage\Uploads\Wp_Upload_Dir;
@@ -405,28 +405,82 @@ class UploadManagerTest extends TestCase {
 		], $wp_upload_dir );
 	}
 
-	public function test_it_adds_a_fake_file() {
-		$this->filesystem->shouldReceive( 'has' )->once()->with( 'fly://sites/4/2020/09/test.jpg' )->andReturnFalse();
+	public function test_it_finds_no_duplicate_files() {
+		$this->filesystem->shouldReceive( 'listContents' )->once()->andReturn( [] );
+		$this->filesystem->shouldReceive( 'createIterator' )
+		                 ->once()
+		                 ->andReturn( new FilesystemIterator( $this->filesystem, 'sites/4/2020/09/test-1.jpg' ), [
+			                 'recursive' => false,
+			                 'filter'    => FilterFactory::and(
+				                 FilterFactory::isFile(),
+				                 FilterFactory::pathContainsString( 'test-1' )
+			                 ),
+		                 ] );
 
 		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
-		$files          = $upload_manager->bypass_directory_listing( [], 'fly://sites/4/2020/09', 'test.jpg' );
+		$files          = $upload_manager->filter_unique_file_list( [], 'fly://sites/4/2020/09', 'test-1.jpg' );
+
+		$this->assertEmpty( $files );
+	}
+
+	public function test_it_finds_a_duplicate_file_of_the_same_name() {
+		$this->filesystem->shouldReceive( 'listContents' )->once()->andReturn( [
+			[
+				'path'     => 'sites/4/2020/09/test-1.jpg',
+				'basename' => 'test-1.jpg',
+			],
+		] );
+		$this->filesystem->shouldReceive( 'createIterator' )
+		                 ->once()
+		                 ->andReturn( new FilesystemIterator( $this->filesystem, 'sites/4/2020/09/test-1.jpg' ), [
+			                 'recursive' => false,
+			                 'filter'    => FilterFactory::and(
+				                 FilterFactory::isFile(),
+				                 FilterFactory::pathContainsString( 'test-1' )
+			                 ),
+		                 ] );
+
+		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
+		$files          = $upload_manager->filter_unique_file_list( [], 'fly://sites/4/2020/09', 'test-1.jpg' );
 
 		$this->assertCount( 1, $files );
 		$this->assertContains(
-			'3debf56855bad8fa0d38d4eb45efe98432d549612703f0b04f7e2ebe9ef28a863fdffc5a8b322524712cf26f5e7efc4ea5a19255f0d30a527e9306b7ee49e2d3.jpg',
+			'test-1.jpg',
 			$files
 		);
 	}
 
-	public function test_it_finds_a_duplicate_file() {
-		$this->filesystem->shouldReceive( 'has' )->once()->with( 'fly://sites/4/2020/09/test.jpg' )->andReturnTrue();
+	public function test_it_finds_a_duplicate_wordpress_thumbnail_files() {
+		$this->filesystem->shouldReceive( 'listContents' )->once()->andReturn( [
+			[
+				'path'     => 'sites/4/2020/09/test-1-150x150.jpg',
+				'basename' => 'test-1-150x150.jpg',
+			],
+			[
+				'path'     => 'sites/4/2020/09/test-1-300x300.jpg',
+				'basename' => 'test-1-300x300.jpg',
+			],
+		] );
+		$this->filesystem->shouldReceive( 'createIterator' )
+		                 ->once()
+		                 ->andReturn( new FilesystemIterator( $this->filesystem, 'sites/4/2020/09/test-1.jpg' ), [
+			                 'recursive' => false,
+			                 'filter'    => FilterFactory::and(
+				                 FilterFactory::isFile(),
+				                 FilterFactory::pathContainsString( 'test-1' )
+			                 ),
+		                 ] );
 
 		$upload_manager = new Upload_Manager( $this->filesystem, $this->upload_dir, $this->image_manager );
-		$files          = $upload_manager->bypass_directory_listing( [], 'fly://sites/4/2020/09', 'test.jpg' );
+		$files          = $upload_manager->filter_unique_file_list( [], 'fly://sites/4/2020/09', 'test-1.jpg' );
 
-		$this->assertCount( 1, $files );
+		$this->assertCount( 2, $files );
 		$this->assertContains(
-			'test.jpg',
+			'test-1-150x150.jpg',
+			$files
+		);
+		$this->assertContains(
+			'test-1-300x300.jpg',
 			$files
 		);
 	}
