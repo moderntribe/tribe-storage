@@ -88,7 +88,7 @@ class Tribe_Storage_Provider implements Providable {
 		}, 9, 1 );
 
 		add_filter( 'pre_wp_unique_filename_file_list', function ( $files, $dir, $filename ) {
-			return $this->upload_dir->bypass_directory_listing( $files, (string) $dir, (string) $filename );
+			return $this->upload_dir->filter_unique_file_list( $files, (string) $dir, (string) $filename );
 		}, 10, 3);
 	}
 
