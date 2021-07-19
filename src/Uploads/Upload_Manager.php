@@ -204,7 +204,7 @@ class Upload_Manager {
 	 * Prevent WordPress from doing full directory listings on remote storage
 	 * when uploading files.
 	 *
-	 * @filter get_files_for_unique_filename_file_list
+	 * @filter pre_wp_unique_filename_file_list
 	 *
 	 * @param  array|null  $files
 	 * @param  string      $dir
