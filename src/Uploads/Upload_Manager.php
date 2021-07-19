@@ -216,10 +216,7 @@ class Upload_Manager {
 		$full_path = trailingslashit( $dir ) . $filename;
 		$exists    = $this->filesystem->has( $full_path );
 
-		$meep = wp_get_additional_image_sizes();
-		$moop = get_intermediate_image_sizes();
-
-		// This file exists, return it WordPress so it can make it unique
+		// This file exists, return it to WordPress so it can make it unique
 		if ( $exists ) {
 			return [
 				$filename,
