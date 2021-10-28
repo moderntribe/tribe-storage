@@ -5,6 +5,7 @@ namespace Tribe\Storage;
 use Exception;
 use Intervention\Image\ImageManager;
 use Jhofm\FlysystemIterator\Plugin\IteratorPlugin;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Filesystem;
@@ -105,28 +106,14 @@ $tribe_storage_config = [
 	 * Use the Local Filesystem Adapter unless it's overridden.
 	 */
 	AdapterInterface::class => static function ( ContainerInterface $c ) {
+		$show_admin_message = false;
 
 		// Try to load a user defined adapter, with a fallback to the local adapter.
 		try {
 			$adapter = $c->get( defined( 'TRIBE_STORAGE_ADAPTER' ) ? TRIBE_STORAGE_ADAPTER : '' )->get();
 		} catch ( Throwable $e ) {
-			$exception = new Exception( 'TRIBE_STORAGE_ADAPTER not defined or is invalid. Falling back to the Local Adapter.' );
-
-			// Show the original exception message in error log if WP_DEBUG is enabled.
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( $e->getMessage() );
-			}
-
-			// Capture the exception to display in the admin if on a production system.
-			add_action( 'admin_init', static function () use ( $exception ): void {
-				do_action( 'tribe/storage/adapter_error', $exception );
-			} );
-
-			$adapter = $c->get( Local_Adapter::class )->get();
-
-			// Fix max execution time outs when using the Local Adapter
-			// @see https://core.trac.wordpress.org/ticket/36534
-			putenv( 'MAGICK_THREAD_LIMIT=1' );
+			$show_admin_message = true;
+			$adapter            = $c->get( Local_Adapter::class )->get();
 		}
 
 		/**
@@ -137,8 +124,34 @@ $tribe_storage_config = [
 		$adapter = apply_filters( 'tribe/storage/flysystem_adapter', $adapter );
 
 		// Load the local adapter if the bridge failed.
-		if ( empty( $adapter ) ) {
-			$adapter = $c->get( Local_Adapter::class )->get();
+		if ( empty( $adapter ) || ! $adapter instanceof AdapterInterface ) {
+			$show_admin_message = true;
+			$adapter            = $c->get( Local_Adapter::class )->get();
+		}
+
+		// Fix max execution timeouts when using the Local Adapter
+		// @see https://core.trac.wordpress.org/ticket/36534
+		if ( $adapter instanceof Local ) {
+			putenv( 'MAGICK_THREAD_LIMIT=1' );
+		}
+
+		// Display a warning to admins in the dashboard if a fallback occurred.
+		if ( $show_admin_message ) {
+			$message = apply_filters(
+				'tribe/storage/undefined_adapter_message',
+				__( 'TRIBE_STORAGE_ADAPTER not defined or is invalid. Falling back to the Local Adapter.', 'tribe-storage' )
+			);
+
+			$exception = new Exception( $message );
+
+			// Show the original exception message in error log if WP_DEBUG is enabled.
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG && isset( $e ) ) {
+				error_log( $e->getMessage() );
+			}
+
+			add_action( 'admin_init', static function () use ( $exception ): void {
+				do_action( 'tribe/storage/adapter_error', $exception );
+			} );
 		}
 
 		// Allow users to disable the adapter cache.
