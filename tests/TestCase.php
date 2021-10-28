@@ -12,6 +12,10 @@ class TestCase extends PHPUnitTestCase {
 		parent::setUp();
 		Monkey\setUp();
 
+		// Mock i18n functions
+		Monkey\Functions\when( '__' )
+			->returnArg();
+
 		// Mock the current blog ID for all tests so caching strategies can work.
 		PHPMockery::mock( 'Tribe\Storage', 'get_current_blog_id' )->andReturn( 1 );
 	}
