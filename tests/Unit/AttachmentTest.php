@@ -60,7 +60,12 @@ class AttachmentTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/attachment_url' )
 			->once()
-			->with( \Mockery::type( 'string' ), \Mockery::type( 'int' ), Mockery::type( Local::class ) );
+			->with(
+				Mockery::type( 'string' ),
+				Mockery::type( 'int' ),
+				Mockery::type( Local::class ),
+				Mockery::type( Wp_Upload_Dir::class )
+			);
 
 		$attachment = new Attachment( $this->filesystem, $this->upload_dir );
 
@@ -86,7 +91,12 @@ class AttachmentTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/attachment_url' )
 			->once()
-			->with( \Mockery::type( 'string' ), \Mockery::type( 'int' ), Mockery::type( Local::class ) );
+			->with(
+				Mockery::type( 'string' ),
+				Mockery::type( 'int' ),
+				Mockery::type( Local::class ),
+				Mockery::type( Wp_Upload_Dir::class )
+			);
 
 		$attachment = new Attachment( $this->filesystem, $this->upload_dir );
 
@@ -106,7 +116,12 @@ class AttachmentTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/attachment_url' )
 			->once()
-			->with( \Mockery::type( 'string' ), \Mockery::type( 'int' ), Mockery::type( Local::class ) );
+			->with(
+				Mockery::type( 'string' ),
+				Mockery::type( 'int' ),
+				Mockery::type( Local::class ),
+				Mockery::type( Wp_Upload_Dir::class )
+			);
 
 		$attachment = new Attachment( $this->filesystem, $this->upload_dir );
 
@@ -128,7 +143,12 @@ class AttachmentTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/attachment_url' )
 			->once()
-			->with( \Mockery::type( 'string' ), \Mockery::type( 'int' ), Mockery::type( Local::class ) );
+			->with(
+				Mockery::type( 'string' ),
+				Mockery::type( 'int' ),
+				Mockery::type( Local::class ),
+				Mockery::type( Wp_Upload_Dir::class )
+			);
 
 		$attachment = new Attachment( $this->filesystem, $this->upload_dir );
 
@@ -152,7 +172,12 @@ class AttachmentTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/attachment_url' )
 			->once()
-			->with( \Mockery::type( 'string' ), \Mockery::type( 'int' ), Mockery::type( Local::class ) )
+			->with(
+				Mockery::type( 'string' ),
+				Mockery::type( 'int' ),
+				Mockery::type( Local::class ),
+				Mockery::type( Wp_Upload_Dir::class )
+			)
 			->andReturn( 'https://somedifferenturl.com/wp-content/uploads/sites/3/2016/12/cropped-Windows-logo2.png' );
 
 		$attachment = new Attachment( $this->filesystem, $this->upload_dir );

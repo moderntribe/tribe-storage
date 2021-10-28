@@ -59,11 +59,12 @@ class Attachment {
 		/**
 		 * Modify the storage attachment url.
 		 *
-		 * @param  string                              $url
-		 * @param  int                                 $attachment_id
-		 * @param  \League\Flysystem\AdapterInterface  $adapter
+		 * @param string                               $url
+		 * @param int                                  $attachment_id
+		 * @param \League\Flysystem\AdapterInterface   $adapter
+		 * @param \Tribe\Storage\Uploads\Wp_Upload_Dir $upload_dir
 		 */
-		return apply_filters( 'tribe/storage/attachment_url', $url, $attachment_id, $this->filesystem->getAdapter() );
+		return apply_filters( 'tribe/storage/attachment_url', $url, $attachment_id, $this->filesystem->getAdapter(), $this->upload_dir );
 	}
 
 	/**
