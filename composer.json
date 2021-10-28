@@ -45,11 +45,12 @@
     "moderntribe/flysystem-stream-wrapper": "^1.0"
   },
   "require-dev": {
-    "ext-exif":"*",
+    "ext-exif": "*",
     "brain/monkey": "2.*",
-    "phpunit/phpunit": "^9",
-    "php-mock/php-mock-mockery": "^1.3",
     "moderntribe/coding-standards": "^2.0",
+    "nunomaduro/collision": "^5.10",
+    "php-mock/php-mock-mockery": "^1.3",
+    "phpunit/phpunit": "^9",
     "wp-cli/wp-cli-bundle": "^2.4"
   },
   "autoload": {
