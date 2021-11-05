@@ -138,9 +138,10 @@ class Upload_Manager {
 		/**
 		 * Get the Tribe Storage upload url.
 		 *
-		 * @param  string  $url
+		 * @param string                               $url
+		 * @param \Tribe\Storage\Uploads\Wp_Upload_Dir $upload_dir
 		 */
-		$url = apply_filters( 'tribe/storage/upload/url', $default_url );
+		$url = apply_filters( 'tribe/storage/upload/url', $default_url, $this->upload_dir );
 		$url = is_string( $url ) ? $url : $default_url;
 		$url = rtrim( $url, '/' );
 

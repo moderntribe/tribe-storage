@@ -261,7 +261,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/upload/url' )
 			->once()
-			->with( 'https://example.com/wp-content/uploads' );
+			->with( 'https://example.com/wp-content/uploads', $this->upload_dir );
 
 		Filters\expectApplied( 'tribe/storage/upload/base_path' )
 			->once()
@@ -292,7 +292,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/upload/url' )
 			->once()
-			->with( 'https://example.com/wp-content/uploads/prod' );
+			->with( 'https://example.com/wp-content/uploads/prod', $this->upload_dir );
 
 		Filters\expectApplied( 'tribe/storage/upload/base_path' )
 			->once()
@@ -322,7 +322,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/upload/url' )
 			->once()
-			->with( 'https://example.com/wp-content/uploads/sites/3' );
+			->with( 'https://example.com/wp-content/uploads/sites/3', $this->upload_dir );
 
 		Filters\expectApplied( 'tribe/storage/upload/base_path' )
 			->once()
@@ -352,7 +352,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/upload/url' )
 			->once()
-			->with( 'https://example.com/en-us/wp-content/uploads/sites/2' );
+			->with( 'https://example.com/en-us/wp-content/uploads/sites/2', $this->upload_dir );
 
 		Filters\expectApplied( 'tribe/storage/upload/base_path' )
 			->once()
@@ -383,7 +383,7 @@ class UploadManagerTest extends TestCase {
 
 		Filters\expectApplied( 'tribe/storage/upload/url' )
 			->once()
-			->with( 'https://example.com/wp-content/uploads/prod' );
+			->with( 'https://example.com/wp-content/uploads/prod', $this->upload_dir );
 
 		Filters\expectApplied( 'tribe/storage/upload/base_path' )
 			->once()
