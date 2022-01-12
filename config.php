@@ -201,7 +201,7 @@ $tribe_storage_config = [
 		$filesystem = new Filesystem(
 			$c->get( AdapterInterface::class ),
 			(array) apply_filters(
-				'tribe/storage/flysystem/config',
+				'tribe/storage/filesystem/config',
 				[
 					'visibility'      => 'public',
 					'disable_asserts' => true,
