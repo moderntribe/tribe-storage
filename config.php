@@ -193,7 +193,20 @@ $tribe_storage_config = [
 		 */
 		$protocol = (string) apply_filters( 'tribe/storage/stream_name', 'fly' );
 
-		$filesystem = new Filesystem( $c->get( AdapterInterface::class ), ['visibility' => 'public'] );
+		/**
+		 * @link https://flysystem.thephpleague.com/v1/docs/usage/setup/#global-configuration
+		 *
+		 * @param array $config The filesystem configuration options.
+		 */
+		$filesystem = new Filesystem(
+			$c->get( AdapterInterface::class ),
+			(array) apply_filters(
+				'tribe/storage/flysystem/config',
+				[
+					'visibility'      => 'public',
+					'disable_asserts' => true,
+				] )
+		);
 
 		// Add filesystem plugins
 		$filesystem->addPlugin( new IteratorPlugin() );
