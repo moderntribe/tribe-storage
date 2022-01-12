@@ -7,7 +7,7 @@
  * Author:             Modern Tribe
  * Author URI:         https://tri.be
  * Text Domain:        tribe-storage
- * Version:            2.4.2
+ * Version:            2.5.0
  * Requires at least:  5.6
  * Requires PHP:       7.3
  */
@@ -17,11 +17,11 @@ use Tribe\Storage\Core;
 use Tribe\Storage\Plugin\Plugin_Loader;
 
 // Require the vendor folder via multiple locations
-$autoloaders = [
+$autoloaders = (array) apply_filters( 'tribe/storage/autoloaders', [
 	trailingslashit( WP_CONTENT_DIR ) . '../vendor/autoload.php',
 	trailingslashit( WP_CONTENT_DIR ) . 'vendor/autoload.php',
 	trailingslashit( __DIR__ ) . 'vendor/autoload.php',
-];
+] );
 
 $autoload = current( array_filter( $autoloaders, 'file_exists' ) );
 
