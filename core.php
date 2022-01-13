@@ -7,7 +7,7 @@
  * Author:             Modern Tribe
  * Author URI:         https://tri.be
  * Text Domain:        tribe-storage
- * Version:            2.5.1
+ * Version:            2.5.2
  * Requires at least:  5.6
  * Requires PHP:       7.3
  */

@@ -203,9 +203,9 @@ $tribe_storage_config = [
 			(array) apply_filters(
 				'tribe/storage/filesystem/config',
 				[
-					'visibility'      => 'public',
-					'disable_asserts' => true,
-				] )
+					'visibility' => 'public',
+				]
+			)
 		);
 
 		// Add filesystem plugins
