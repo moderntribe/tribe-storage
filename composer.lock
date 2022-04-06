@@ -799,16 +799,16 @@
         },
         {
             "name": "moderntribe/flysystem-stream-wrapper",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moderntribe/flysystem-stream-wrapper.git",
-                "reference": "0c9c948c26902d1857a2f1d3125c96de14451231"
+                "reference": "7a6982242e657065660b0d303ffae6f2206b9585"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moderntribe/flysystem-stream-wrapper/zipball/0c9c948c26902d1857a2f1d3125c96de14451231",
-                "reference": "0c9c948c26902d1857a2f1d3125c96de14451231",
+                "url": "https://api.github.com/repos/moderntribe/flysystem-stream-wrapper/zipball/7a6982242e657065660b0d303ffae6f2206b9585",
+                "reference": "7a6982242e657065660b0d303ffae6f2206b9585",
                 "shasum": ""
             },
             "require": {
@@ -841,20 +841,20 @@
             },
             "scripts": {
                 "up": [
-                    "docker-compose --project-directory docker --project-name flysystem up -d --force-recreate"
+                    "docker-compose --project-directory docker up -d --force-recreate"
                 ],
                 "down": [
-                    "docker-compose --project-directory docker --project-name flysystem down --remove-orphans"
+                    "docker-compose --project-directory docker down --remove-orphans"
                 ],
                 "shell": [
-                    "docker exec -it flysystem_php-tests_1 /bin/bash"
+                    "docker exec -it flysystem-wrapper-tests /bin/bash"
                 ],
                 "test": [
                     "@up",
-                    "docker exec -it -w /application/www flysystem_php-tests_1 /usr/local/bin/php /application/www/vendor/bin/phpunit"
+                    "docker exec -it -w /application/www flysystem-wrapper-tests /usr/local/bin/php /application/www/vendor/bin/phpunit"
                 ],
                 "test-ci": [
-                    "docker exec -i -w /application/www flysystem_php-tests_1 /usr/local/bin/php /application/www/vendor/bin/phpunit"
+                    "docker exec -i -w /application/www flysystem-wrapper-tests /usr/local/bin/php /application/www/vendor/bin/phpunit"
                 ]
             },
             "authors": [
@@ -876,10 +876,10 @@
                 "streamwrapper"
             ],
             "support": {
-                "source": "https://github.com/moderntribe/flysystem-stream-wrapper/tree/v1.0.2",
+                "source": "https://github.com/moderntribe/flysystem-stream-wrapper/tree/v1.0.3",
                 "issues": "https://github.com/moderntribe/flysystem-stream-wrapper/issues"
             },
-            "time": "2022-01-13T18:58:39+00:00"
+            "time": "2022-04-06T16:27:04+00:00"
         },
         {
             "name": "opis/closure",
