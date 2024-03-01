@@ -42,7 +42,7 @@
     "intervention/image": "^2.5",
     "symfony/lock": "^5.2",
     "jhofm/flysystem-iterator": "^2.2",
-    "moderntribe/flysystem-stream-wrapper": "^1.0"
+    "moderntribe/flysystem-stream-wrapper": "^2.0"
   },
   "require-dev": {
     "ext-exif": "*",
