@@ -1,7 +1,7 @@
 # Tribe Storage
 
 [![PHPCS + Unit Tests](https://github.com/moderntribe/tribe-storage/actions/workflows/pull-request.yml/badge.svg)](https://github.com/moderntribe/tribe-storage/actions/workflows/pull-request.yml)
-![php 7.3+](https://img.shields.io/badge/php-min%207.3-red.svg)
+![php 7.4+](https://img.shields.io/badge/php-min%207.4-red.svg)
 
 This WordPress plugin works as a bridge to use [Flysystem](https://flysystem.thephpleague.com/v1/docs/) adapters (v1) 
 within WordPress. This plugin is meant to be installed and configured by **developers**, as it has no GUI.
@@ -30,7 +30,7 @@ define( 'WP_CONTENT_URL', ( tribe_isSSL() ? 'https' : 'http' ) . '://' . $host .
 ## Installation
 
 **Requirements**
-- PHP7.3+
+- PHP7.4+
 - WordPress 5.6+
 - [Composer](https://getcomposer.org/)
 - [Composer Installers](https://composer.rarst.net/recipe/paths-control/)
