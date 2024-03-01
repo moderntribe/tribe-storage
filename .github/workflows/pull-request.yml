@@ -4,6 +4,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  COMPOSER_AUTH: '${{ secrets.COMPOSER_AUTH_JSON }}'
+
 jobs:
   phpcs:
     name: Test (PHP ${{ matrix.php-versions }})
@@ -19,18 +22,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
+
       - name: Validate Composer
         run: composer validate
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      - name: Composer install
-        run: composer install
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+
       - name: Detect File Changes
         uses: dorny/paths-filter@v2
         id: filter
@@ -39,10 +37,10 @@ jobs:
           filters: |
             src:
               - added|modified: 'src/**/*.php'
+
       - name: PHP CodeSniffer
         if: ${{ steps.filter.outputs.src == 'true' }}
-        env:
-          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         run: ./vendor/bin/phpcs ${{ steps.filter.outputs.src_files }}
+
       - name: Unit testing
         run: ./vendor/bin/phpunit
